@@ -30,7 +30,7 @@ public class BigQueryRepository {
 	BigQuery bigQuery;
 
 	public String query = "SELECT * FROM iotds.temp_sensor LIMIT 1000;";
-	public String storkQuery = "SELECT * FROM iotds.stork_data WHERE DATE(_PARTITIONTIME) = '2019-10-26' LIMIT 1000;";
+	public String storkQuery = "SELECT * FROM iotds.stork_data WHERE DATE(timestamp) = '2019-10-26' LIMIT 1000;";
 
 	public List<List<Double>> getCoordinates() {
 		try {

@@ -23,15 +23,14 @@ window.addEventListener('load', () => {
     .dropdown({
       placeholder: 'Select species',
       values: [{
-        name: 'Stock',
-        value: '3',
-        // selected: true,
+        name: 'Stork',
+        value: 'Stork',
       }, {
         name: 'Deer',
-        value: '6',
+        value: 'Deer',
       }, {
         name: 'Frog',
-        value: '12',
+        value: 'Frog',
       }],
       onAdd: function (value) {
         filterParams.species.push(value);
