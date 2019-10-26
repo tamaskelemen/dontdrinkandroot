@@ -48,6 +48,9 @@
 				<div class="field">
 					<label>Map type</label>
 					<div class="ui buttons fluid maptype">
+						<label class="btn btn-primary ui toggle button">
+							<input type="checkbox"> Option 1
+						</label>
 						<button class="ui toggle button" data-value="lines">Lines</button>
 						<button class="ui toggle button" data-value="heat">Heatmap</button>
 						<button class="ui toggle button" data-value="terr">Territory</button>
@@ -95,7 +98,7 @@
     });
   }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC40Ygve-HsjP0ET6yBRmomWT457jv7KTg&callback=initMap"
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC40Ygve-HsjP0ET6yBRmomWT457jv7KTg&callback=initMap&libraries=visualization"
 		async defer></script>
 </body>
 </html>

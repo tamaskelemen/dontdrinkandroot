@@ -11,6 +11,7 @@ import com.junctionx.Junctionx.repository.BigQueryRepository;
 import java.util.List;
 
 @Controller
+@CrossOrigin
 public class AnimalPathController {
 
     ObjectMapper asd = new ObjectMapper();
@@ -19,7 +20,6 @@ public class AnimalPathController {
     BigQueryRepository bigQueryRepository;
 
     @RequestMapping(value = "/animal-path/{animal}/device/{date}", method = RequestMethod.GET)
-
     @ResponseBody
     public ArrayNode getMovement(@PathVariable String animal, @PathVariable String date) {
 
