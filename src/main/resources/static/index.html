@@ -1,31 +1,110 @@
 <!DOCTYPE html>
 <head>
-    <meta charset='utf-8'/>
-    <title>Display a map</title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet'/>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-    <script src="js/map-creator.js"></script>
-    <script src="js/layer-lines.js"></script>
+	<meta charset='utf-8' />
+	<title>Display a map</title>
+	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui-range@1.0.1/range.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/semantic-ui-range@1.0.1/range.min.js"></script>
+	<script src="js/map-creator.js"></script>
+	<script src="js/layer-lines.js"></script>
+	<script src="js/toolbar.js"></script>
 </head>
 <body>
-    <div class="content">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="navbar-brand text-primary">asdf</div>
-        </nav>
-<!--            <div id='map'></div>-->
-    </div>
+<div class="content">
+	<div id='map'></div>
+	<div class="toolbar">
+		<h3 class="ui header">Animals</h3>
+		<div class="ui divider"></div>
+		<div class="ui form">
+			<div class="field">
+				<label>Type</label>
+				<select multiple="" class="ui dropdown">
+					<option value="">Select animal types</option>
+					<option value="AF">Stock</option>
+					<option value="AF">Deer</option>
+					<option value="AF">Frogs</option>
+				</select>
+			</div>
+			<div class="field">
+				<label>Map type</label>
+				<div class="ui buttons fluid">
+					<button class="toggle ui button">One</button>
+					<button class="ui button">Two</button>
+					<button class="ui button">Three</button>
+				</div>
+			</div>
+			<div class="field">
+				<label>Time span</label>
+				<select class="ui dropdown">
+					<option value="">Select time span</option>
+					<option value="AF">Last 3 months</option>
+					<option value="AF">Last 6 months</option>
+					<option value="AF">Last 12 months</option>
+					<option value="AF">Custom</option>
+				</select>
+			</div>
+			<div class="ui grid">
+				<div class="eight wide column">
+					<div class="field">
+						<label>From</label>
+						<input type="date" />
+					</div>
+				</div>
+				<div class="eight wide column">
+					<div class="field">
+						<label>To</label>
+						<input type="date" />
+					</div>
+				</div>
+			</div>
+			<div class="field">
+				<label>Animation duration</label>
+				<div class="ui range"></div>
+				<!--				<select class="ui dropdown">-->
+				<!--					<option value="">Select duration</option>-->
+				<!--					<option value="AF">5 seconds</option>-->
+				<!--					<option value="AF">15 seconds</option>-->
+				<!--					<option value="AF">30 seconds</option>-->
+				<!--				</select>-->
+			</div>
+			<!--		<div class="ui inverted segment">-->
+			<!--			<div class="ui inverted accordion">-->
+			<!--				<div class="title">-->
+			<!--					<i class="dropdown icon"></i>-->
+			<!--					What is a dog?-->
+			<!--				</div>-->
+			<!--				<div class="content">-->
+			<!--					<p class="transition hidden">A dog is a type of domesticated animal. Known for its loyalty and faithfulness,-->
+			<!--						it can be found as a welcome guest in many households across the world.</p>-->
+			<!--				</div>-->
+			<!--				<div class="title">-->
+			<!--					<i class="dropdown icon"></i>-->
+			<!--					What kinds of dogs are there?-->
+			<!--				</div>-->
+			<!--				<div class="content">-->
+			<!--					<p>There are many breeds of dogs. Each breed varies in size and temperament. Owners often select a breed of-->
+			<!--						dog that they find to be compatible with their own lifestyle and desires from a companion.</p>-->
+			<!--				</div>-->
+			<!--				<div class="title">-->
+			<!--					<i class="dropdown icon"></i>-->
+			<!--					How do you acquire a dog?-->
+			<!--				</div>-->
+			<!--				<div class="content">-->
+			<!--					<p>Three common ways for a prospective owner to acquire a dog is from pet shops, private owners, or-->
+			<!--						shelters.</p>-->
+			<!--					<p>A pet shop may be the most convenient way to buy a dog. Buying a dog from a private owner allows you to-->
+			<!--						assess the pedigree and upbringing of your dog before choosing to take it home. Lastly, finding your dog-->
+			<!--						from a shelter, helps give a good home to a dog who may not find one so readily.</p>-->
+			<!--				</div>-->
+			<!--			</div>-->
+			<!--		</div>-->
+		</div>
+	</div>
 
 </body>
