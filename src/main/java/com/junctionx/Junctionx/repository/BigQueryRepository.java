@@ -107,7 +107,7 @@ public class BigQueryRepository {
 		}
 	}
 
-	public ArrayNode animalPath(String animal, String date) {
+	public ObjectNode animalPath(String animal, String date) {
 		try {
 			String pathQuery = "SELECT individual_local_identifier, location_long, location_lat FROM iotds." + animal + "_data WHERE (location_long NOT LIKE 'NA' AND location_lat NOT LIKE 'NA') AND timestamp BETWEEN  '"+ date +" 00:00:00' AND '" + date + " 23:59:59' ORDER BY timestamp ASC LIMIT 1000";
 
@@ -132,24 +132,39 @@ public class BigQueryRepository {
 			TableResult tableResult = queryJob.getQueryResults();
 			ObjectMapper asd = new ObjectMapper();
 
-			ArrayNode result = asd.createArrayNode();
+			//ArrayNode result = asd.createArrayNode();
 			// Print all pages of the results.
+			ObjectNode kulso = asd.createObjectNode();
+
 			for (FieldValueList row : tableResult.iterateAll()) {
 				ObjectNode objectNode = asd.createObjectNode();
 
+
 				String id = row.get("individual_local_identifier").getStringValue();
-				//String timestamp = row.get("timestamp").getStringValue();
 				Double lat = row.get("location_lat").getDoubleValue();
 				Double lng = row.get("location_long").getDoubleValue();
 
 				objectNode.put("lat", lat);
 				objectNode.put("lng", lng);
-				objectNode.put("deviceId", id);
 				//objectNode.put("timestamp", timestamp);
 				objectNode.put("animal", animal);
-				result.add(objectNode);
+
+				ArrayNode temp = (ArrayNode) kulso.get(id);
+						if (temp == null) {
+							temp = asd.createArrayNode();
+							temp.add(objectNode);
+						} else {
+							temp.add(objectNode);
+						}
+
+
+
+				kulso.set(id, temp);
+
 			}
-			return result;
+			//result.add(kulso);
+
+			return kulso;
 
 		} catch (Exception e) {
 			log.error("----------error: ", e);
