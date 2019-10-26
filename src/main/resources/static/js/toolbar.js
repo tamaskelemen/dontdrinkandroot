@@ -8,6 +8,11 @@ let filterParams = {
 window.test = filterParams;
 
 window.addEventListener('load', () => {
+  $('.open-close-button')
+    .on('click', () => {
+      document.querySelector('.content').classList.toggle('closed');
+    });
+
   $('.dropdown.species')
     .dropdown({
       placeholder: 'Select species',
