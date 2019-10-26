@@ -109,7 +109,7 @@ public class BigQueryRepository {
 
 	public ArrayNode animalPath(String animal, String date) {
 		try {
-			String pathQuery = "SELECT individual_local_identifier, location_long, location_lat, timestamp FROM iotds." + animal + "_data WHERE DATE(_PARTITIONTIME) = '"+ date +"' LIMIT 1000";
+			String pathQuery = "SELECT individual_local_identifier, location_long, location_lat FROM iotds." + animal + "_data WHERE (location_long NOT LIKE 'NA' AND location_lat NOT LIKE 'NA') AND timestamp BETWEEN  '"+ date +" 00:00:00' AND '" + date + " 23:59:59' ORDER BY timestamp ASC LIMIT 1000";
 
 			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(pathQuery)
 					.setUseLegacySql(false).build();
@@ -138,14 +138,14 @@ public class BigQueryRepository {
 				ObjectNode objectNode = asd.createObjectNode();
 
 				String id = row.get("individual_local_identifier").getStringValue();
-				String timestamp = row.get("timestamp").getStringValue();
+				//String timestamp = row.get("timestamp").getStringValue();
 				Double lat = row.get("location_lat").getDoubleValue();
 				Double lng = row.get("location_long").getDoubleValue();
 
 				objectNode.put("lat", lat);
 				objectNode.put("lng", lng);
 				objectNode.put("deviceId", id);
-				objectNode.put("timestamp", timestamp);
+				//objectNode.put("timestamp", timestamp);
 				objectNode.put("animal", animal);
 				result.add(objectNode);
 			}

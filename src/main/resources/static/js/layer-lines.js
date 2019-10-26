@@ -63,6 +63,7 @@ window.onload = function () {
       strokeWeight: 2,
     });
 
+  flightPath.setMap(map);
     flightPath.setMap(map);
 
       var triangleCoords = [

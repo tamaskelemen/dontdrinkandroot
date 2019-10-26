@@ -4,7 +4,7 @@
   left: 0;
   width: calc(100% - 300px);
   height: 100%;
-  transition: all .5s ease,-webkit-transform .5s ease;
+  transition: all .5s ease, -webkit-transform .5s ease;
 }
 
 html, body {
@@ -61,9 +61,9 @@ html, body {
   flex-direction: column;
 }
 
-.animals {
-  flex: 1;
-}
+/*.animals {*/
+/*  flex: 1;*/
+/*}*/
 
 .button.primary {
   background-color: #343a40 !important;
@@ -71,8 +71,9 @@ html, body {
 
 .open-close-button {
   position: absolute;
-  left: -22px;
+  left: -18px;
   top: 14px;
+  transition: all .5s ease, -webkit-transform .5s ease !important;
 }
 
 .animals .header {
@@ -80,13 +81,35 @@ html, body {
 }
 
 .toolbar {
-  transition: all .5s ease,-webkit-transform .5s ease;
+  transition: all .5s ease, -webkit-transform .5s ease;
 }
 
 .content.closed .toolbar {
   right: -284px;
 }
 
+.content.closed .toolbar .open-close-button {
+  left: -22px;
+}
+
 .content.closed #map {
   width: calc(100% - 16px);
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - 300px);
+  height: 100%;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.gm-style-cc {
+  display:none;
 }
