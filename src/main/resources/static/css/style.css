@@ -18,7 +18,9 @@
 }
 
 .ui.buttons.fluid button {
-  width: 50%;
+  width: 33%;
+  padding-right: 0;
+  padding-left: 0;
 }
 
 .ui.buttons.maptype .active.toggle.button {
@@ -27,4 +29,22 @@
 
 .ui.range .inner .track-fill {
   background-color: #343a40 !important;
+}
+
+.irs-min, .irs-max {
+  display: none !important;
+}
+
+.irs--flat .irs-bar,
+.irs--flat .irs-handle > i:first-child,
+.irs--flat .irs-single {
+  background-color: #343a40 !important;
+}
+
+.irs--flat .irs-single:before {
+  border-top-color: #343a40 !important;
+}
+
+.custom-timespan:not(.active) {
+  display: none;
 }

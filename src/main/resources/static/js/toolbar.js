@@ -47,13 +47,17 @@ window.addEventListener('load', () => {
         name: 'Custom',
         value: 'c',
       }],
+      onChange: function (value) {
+        document.querySelector('.custom-timespan').classList.toggle('active', value === 'c');
+      },
     });
 
-  $('.ui.range').range({
-    min: 0,
+  $('.ui.range').ionRangeSlider({
+    grid: true,
+    min: 2,
     max: 30,
-    start: 10,
     step: 1,
-    labelType: 'number',
+    from: 10,
+    prettify: val => `${val}s`,
   });
 });

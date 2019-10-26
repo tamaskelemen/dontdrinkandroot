@@ -9,8 +9,6 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui-range@1.0.1/range.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/semantic-ui-range@1.0.1/range.min.js"></script>
 	<script src="js/index.js"></script>
 </head>
 <body>
@@ -29,35 +27,32 @@
 				<div class="ui buttons fluid maptype">
 					<button class="ui toggle button active">Lines</button>
 					<button class="ui toggle button">Heatmap</button>
+					<button class="ui toggle button">Territory</button>
 				</div>
 			</div>
 			<div class="field">
 				<label>Time span</label>
 				<select class="ui dropdown timespan"></select>
 			</div>
-<!--			<div class="ui grid">-->
-<!--				<div class="eight wide column">-->
-<!--					<div class="field">-->
-<!--						<label>From</label>-->
-<!--						<input type="date" />-->
-<!--					</div>-->
-<!--				</div>-->
-<!--				<div class="eight wide column">-->
-<!--					<div class="field">-->
-<!--						<label>To</label>-->
-<!--						<input type="date" />-->
-<!--					</div>-->
-<!--				</div>-->
-<!--			</div>-->
+			<div class="custom-timespan">
+				<div class="field">
+					<label>From</label>
+					<input type="date" />
+				</div>
+				<div class="field">
+					<label>To</label>
+					<input type="date" />
+				</div>
+			</div>
 			<div class="field" style="margin-top: 1em;">
 				<label>Animation duration</label>
 				<div class="ui range labeled"></div>
 			</div>
 		</div>
-<!--		<h3 class="ui header">Humans</h3>-->
-<!--		<div class="ui divider"></div>-->
-<!--		<div class="ui form">-->
-<!--		</div>-->
+		<!--		<h3 class="ui header">Humans</h3>-->
+		<!--		<div class="ui divider"></div>-->
+		<!--		<div class="ui form">-->
+		<!--		</div>-->
 	</div>
 </div>
 </body>
