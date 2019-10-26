@@ -40,7 +40,7 @@ _BACKOFF_DURATION = 60
 DEVICE_ID_PLACE = 9
 LAT_PLACE = 3
 LNG_PLACE = 4
-TYPE = "bird"
+TYPE = "stork"
 
 
 # [START iot_http_jwt]
@@ -227,8 +227,8 @@ def main():
                     args.project_id, args.private_key_file, args.algorithm)
                 jwt_iat = datetime.datetime.utcnow()
             date =  int(round(time.time() * 1000))
-            payload = "{},{},{},{},{},{}".format(
-                devicename, date, temp, lat, lng, 20
+            payload = "{},{},{},{},{},{}, {}".format(
+                devicename, date, temp, lat, lng, 20, TYPE
             )
             # payload = '{}/{}-payload-{}'.format(
             #     args.registry_id, args.device_id, i)
@@ -241,19 +241,20 @@ def main():
 
             print('HTTP response: ', resp)
 
-            # Send events every second. State should not be updated as often
-            time.sleep(1 if args.message_type == 'event' else 5)
             print('Finished.')
 # [END iot_http_run]
 
 def register(args):
     with open('data.csv',"r") as source:
         rdr= csv.reader( source )
+        resultSet = set()
         for r in rdr:
             devicename = r[DEVICE_ID_PLACE]
             devicename = devicename.replace(' ', '_')
             devicename = devicename.replace('(', '')
             devicename = devicename.replace(')', '')
+            resultSet.add(devicename)
+        for i in resultSet:
             cmd = "gcloud beta iot devices create " +  devicename + "\
                     --project=" + args.project_id + "\
                     --region=" + args.cloud_region + "\
@@ -261,6 +262,7 @@ def register(args):
                     --public-key path=rsa_cert.pem,type=rs256"
             print(cmd)
             os.system(cmd)
+
 
 
 if __name__ == '__main__':

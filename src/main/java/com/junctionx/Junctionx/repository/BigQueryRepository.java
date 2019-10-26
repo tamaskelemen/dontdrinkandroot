@@ -1,5 +1,8 @@
 package com.junctionx.Junctionx.repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.bigquery.FieldValueList;
 import com.google.cloud.bigquery.Job;
@@ -12,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -102,4 +106,56 @@ public class BigQueryRepository {
 			return null;
 		}
 	}
+
+	public ArrayNode animalPath(String animal, String date) {
+		try {
+			String pathQuery = "SELECT individual_local_identifier, location_long, location_lat, timestamp FROM iotds." + animal + "_data WHERE DATE(_PARTITIONTIME) = '"+ date +"' LIMIT 1000";
+
+			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(pathQuery)
+					.setUseLegacySql(false).build();
+
+			JobId jobId = JobId.of(UUID.randomUUID().toString());
+			Job queryJob = bigQuery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());
+
+			queryJob = queryJob.waitFor();
+
+			// Check for errors
+			if (queryJob == null) {
+				throw new RuntimeException("Job no longer exists");
+			} else if (queryJob.getStatus().getError() != null) {
+				// You can also look at queryJob.getStatus().getExecutionErrors() for all
+				// errors, not just the latest one.
+				throw new RuntimeException(queryJob.getStatus().getError().toString());
+			}
+
+			// Get the results.
+			TableResult tableResult = queryJob.getQueryResults();
+			ObjectMapper asd = new ObjectMapper();
+
+			ArrayNode result = asd.createArrayNode();
+			// Print all pages of the results.
+			for (FieldValueList row : tableResult.iterateAll()) {
+				ObjectNode objectNode = asd.createObjectNode();
+
+				String id = row.get("individual_local_identifier").getStringValue();
+				String timestamp = row.get("timestamp").getStringValue();
+				Double lat = row.get("location_lat").getDoubleValue();
+				Double lng = row.get("location_long").getDoubleValue();
+
+				objectNode.put("lat", lat);
+				objectNode.put("lng", lng);
+				objectNode.put("deviceId", id);
+				objectNode.put("timestamp", timestamp);
+				objectNode.put("animal", animal);
+				result.add(objectNode);
+			}
+			return result;
+
+		} catch (Exception e) {
+			log.error("----------error: ", e);
+		}
+
+		return null;
+	}
+
 }
