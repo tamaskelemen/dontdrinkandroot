@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -132,9 +133,9 @@ public class BigQueryRepository {
 			ObjectMapper asd = new ObjectMapper();
 
 			ArrayNode result = asd.createArrayNode();
-			ObjectNode objectNode = asd.createObjectNode();
 			// Print all pages of the results.
 			for (FieldValueList row : tableResult.iterateAll()) {
+				ObjectNode objectNode = asd.createObjectNode();
 
 				String id = row.get("individual_local_identifier").getStringValue();
 				String timestamp = row.get("timestamp").getStringValue();
