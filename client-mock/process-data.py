@@ -25,7 +25,6 @@ README in the parent folder.
 import argparse
 import base64
 import datetime
-import json
 import time
 
 from google.api_core import retry
@@ -33,6 +32,7 @@ import jwt
 import requests
 import os
 import csv
+import json
 # [END iot_http_includes]
 
 _BASE_URL = 'https://cloudiotdevice.googleapis.com/v1'
@@ -98,9 +98,9 @@ def publish_message(
     resp = requests.post(
         publish_url, data=json.dumps(body), headers=headers)
 
-    if (resp.status_code != 200):
-        print('Response came back {}, retrying'.format(resp.status_code))
-        raise AssertionError('Not OK response: {}'.format(resp.status_code))
+    #if (resp.status_code != 200):
+    #print('Response came back {}, retrying'.format(resp.status_code))
+    #raise AssertionError('Not OK response: {}'.format(resp.status_code))
 
     return resp
 # [END iot_http_publish]
@@ -197,7 +197,7 @@ def main():
     args.private_key_file="rsa_private.pem"
     args.ca_certs="roots.pem"
 
-    register(args)
+    #register(args)
 
     jwt_token = create_jwt(
         args.project_id, args.private_key_file, args.algorithm)
@@ -209,16 +209,14 @@ def main():
     #     args.cloud_region, args.registry_id, args.device_id, jwt_token).text))
 
     with open('data.csv',"r") as source:
-        rdr= csv.reader( source )
-        for r in rdr:
-            devicename = r[DEVICE_ID_PLACE]
-            devicename = devicename.replace(' ', '_')
-            devicename = devicename.replace('(', '')
-            devicename = devicename.replace(')', '')
-
-            lat = r[LAT_PLACE]
-            lng = r[LNG_PLACE]
-            temp = 0
+        for r in source:
+            temp = r
+            temp = temp.replace(' ', '_')
+            temp = temp.replace('(', '')
+            temp = temp.replace(')', '')
+            split = temp.split(',')
+            devicename = split[DEVICE_ID_PLACE]
+            devicename = devicename.replace('"', '')
 
             seconds_since_issue = (datetime.datetime.utcnow() - jwt_iat).seconds
             if seconds_since_issue > 60 * jwt_exp_mins:
@@ -227,11 +225,15 @@ def main():
                     args.project_id, args.private_key_file, args.algorithm)
                 jwt_iat = datetime.datetime.utcnow()
             date =  int(round(time.time() * 1000))
-            payload = "{},{},{},{},{},{}, {}".format(
-                devicename, date, temp, lat, lng, 20, TYPE
-            )
+            #payload = "{},{},{},{},{},{}, {}".format(
+            #    devicename, date, temp, lat, lng, 20, TYPE
+            #)
+            #payload = devicename + "," + str(date) + "," + str(temp) + "," + lat + "," + lng + "," + "20" + "," + TYPE
             # payload = '{}/{}-payload-{}'.format(
             #     args.registry_id, args.device_id, i)
+            data = '{"event_id": 704270432,"visible": "true","timestamp": "2013-07-15 09:50:09.000","location_long" : 8.9318275,"location_lat": 47.7512383,"study_specific_measurement": "LifeTrack_White_Stork_SWGermany_2013","sensor_type": "gps","individual_taxon_canonical_name": "Ciconia_ciconia","tag_local_identifier": 3030,"individual_local_identifier" : "Benjamin_DER_AN867","study_name": "MPIO_white_stork_lifetime_tracking_data_2013-2014"}'
+            line = json.loads(data)
+            payload = json.dumps(line)
 
             print('Publishing message \'{}\''.format(payload))
 
@@ -253,9 +255,11 @@ def register(args):
             devicename = devicename.replace(' ', '_')
             devicename = devicename.replace('(', '')
             devicename = devicename.replace(')', '')
+            devicename = devicename.replace('"', '')
             resultSet.add(devicename)
+        print resultSet
         for i in resultSet:
-            cmd = "gcloud beta iot devices create " +  devicename + "\
+            cmd = "gcloud beta iot devices create " +  i + "\
                     --project=" + args.project_id + "\
                     --region=" + args.cloud_region + "\
                     --registry=" + args.registry_id + "\
