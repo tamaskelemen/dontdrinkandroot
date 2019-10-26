@@ -241,8 +241,6 @@ def main():
 
             print('HTTP response: ', resp)
 
-            # Send events every second. State should not be updated as often
-            time.sleep(1 if args.message_type == 'event' else 5)
             print('Finished.')
 # [END iot_http_run]
 
