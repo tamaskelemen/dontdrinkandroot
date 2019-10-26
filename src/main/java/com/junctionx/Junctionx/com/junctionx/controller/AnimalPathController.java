@@ -17,10 +17,10 @@ public class AnimalPathController {
     @Autowired
     BigQueryRepository bigQueryRepository;
 
-    @RequestMapping(value = "/animal-path/{animal}/device/{date}", method = RequestMethod.GET)
+    @RequestMapping(value = "/animal-path/{animal}/{from}/{to}", method = RequestMethod.GET)
     @ResponseBody
-    public ObjectNode getMovement(@PathVariable String animal, @PathVariable String date) {
+    public ObjectNode getMovement(@PathVariable String animal, @PathVariable String from, @PathVariable String to) {
 
-        return bigQueryRepository.animalPath(animal, date);
+        return bigQueryRepository.animalPath(animal, from, to);
     }
 }

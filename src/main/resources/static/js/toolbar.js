@@ -1,11 +1,12 @@
-let filterParams = {
+import moment from 'moment';
+
+export let filterParams = {
   species: [],
   mapType: '',
-  timespan: '',
+  fromDate: '',
+  toDate: '',
   animationDuration: 10,
 };
-
-window.test = filterParams;
 
 window.addEventListener('load', () => {
   $('.open-close-button')
@@ -22,13 +23,14 @@ window.addEventListener('load', () => {
       placeholder: 'Select species',
       values: [{
         name: 'Stork',
-        value: 'Stork',
+        value: 'stork',
+        selected: true,
       }, {
         name: 'Deer',
-        value: 'Deer',
+        value: 'deer',
       }, {
         name: 'Frog',
-        value: 'Frog',
+        value: 'frog',
       }],
       onAdd: function (value) {
         filterParams.species.push(value);
@@ -40,10 +42,10 @@ window.addEventListener('load', () => {
 
   $('.maptype button')
     .on('click', e => {
-      document.querySelectorAll('.maptype button')
-        .forEach(elm => elm.classList.remove('active'));
-      e.target.classList.add('active');
-      // e.target.classList.toggle('active');
+      // document.querySelectorAll('.maptype button')
+      //   .forEach(elm => elm.classList.remove('active'));
+      // e.target.classList.add('active');
+      e.target.classList.toggle('active');
 
       filterParams.mapType = e.target.dataset.value;
     });
@@ -53,23 +55,29 @@ window.addEventListener('load', () => {
       placeholder: 'Select timespan',
       values: [{
         name: 'Last 3 months',
-        value: '3',
-        selected: true,
+        value: 3,
       }, {
         name: 'Last 6 months',
-        value: '6',
+        value: 6,
       }, {
         name: 'Last 12 months',
-        value: '12',
+        value: 12,
       }, {
         name: 'Custom',
         value: 'c',
-      // }, {
-      //   name: 'Fixed date',
-      //   value: 'f',
+        selected: true,
+        // }, {
+        //   name: 'Fixed date',
+        //   value: 'f',
       }],
       onChange: function (value) {
-        filterParams.timespan = value;
+        if (value === 'c') {
+          filterParams.fromDate = moment(document.querySelector('.fromDate').value).format('YYYY-MM-DD');
+          filterParams.toDate = moment(document.querySelector('.toDate').value).format('YYYY-MM-DD');
+        } else {
+          filterParams.fromDate = moment().subtract(value, 'month').format('YYYY-MM-DD');
+          filterParams.toDate = moment().format('YYYY-MM-DD');
+        }
 
         document.querySelector('.custom-timespan').classList.toggle('active', value === 'c');
         document.querySelector('.fixed-timespan').classList.toggle('active', value === 'f');

@@ -1,3 +1,5 @@
+import { filterParams } from './toolbar';
+
 window.onload = function () {
 
   const applyButton = document.getElementById('apply-button');
@@ -15,9 +17,14 @@ window.onload = function () {
   let territoryMaps = [];
 
   applyButton.addEventListener('click', function () {
+    const species = filterParams.species.reduce((a,b) => `${a},${b}`);
+
     const linesIsActive = $('#lines').hasClass('active');
     const heatmapIsActive = $('#heatmap').hasClass('active');
     const territoryIsActive = $('#territory').hasClass('active');
+
+    const fromDate = filterParams.fromDate;
+    const toDate = filterParams.toDate;
 
     applyButton.classList.add('loading');
 
@@ -35,7 +42,7 @@ window.onload = function () {
     }
 
     if (heatmapIsActive) {
-      return fetch('http://localhost:8080/heatmap-date-range/stork/2013-10-26/2013-10-28')
+      fetch(`http://localhost:8080/heatmap-date-range/${species}/${fromDate}/${toDate}`)
         .then(res => res.json())
         .then(json => {
           !linesIsActive && addLinesToMap({}, false);
@@ -46,18 +53,20 @@ window.onload = function () {
         })
         .catch(console.error);
     }
+    if (linesIsActive || territoryIsActive) {
+      fetch(`http://localhost:8080/animal-path/${species}/${fromDate}/${toDate}`)
+        .then(res => res.json())
+        .then(json => {
+          addLinesToMap(json, linesIsActive);
+          !heatmapIsActive && addHeatmapToMap([], false);
+          addTerritoryToMap(json, territoryIsActive);
 
-    fetch('http://localhost:8080//animal-path/stork/device/2013-10-26')
-      .then(res => res.json())
-      .then(json => {
-        addLinesToMap(json, linesIsActive);
-        !heatmapIsActive && addHeatmapToMap([], false);
-        addTerritoryToMap(json, territoryIsActive);
-
-        applyButton.classList.remove('loading');
-      })
-      .catch(console.error);
+          applyButton.classList.remove('loading');
+        })
+        .catch(console.error);
+    }
   });
+
 
   function addLinesToMap(linesData, isActive) {
     if (!isActive) {
