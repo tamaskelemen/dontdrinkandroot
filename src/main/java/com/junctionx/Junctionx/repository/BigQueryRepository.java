@@ -90,8 +90,9 @@ public class BigQueryRepository {
 			List<List<Double>> result = new ArrayList<>();
 			// Print all pages of the results.
 			for (FieldValueList row : tableResult.iterateAll()) {
-				Double lat = row.get("lat").getDoubleValue();
-				Double lng = row.get("lng").getDoubleValue();
+
+				Double lat = row.get("location_lat").getDoubleValue();
+				Double lng = row.get("location_long").getDoubleValue();
 				List<Double> temp = Arrays.asList(lat,lng);
 				result.add(temp);
 			}
