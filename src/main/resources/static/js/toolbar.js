@@ -43,9 +43,10 @@ window.addEventListener('load', () => {
 
   $('.maptype button')
     .on('click', e => {
-      // document.querySelectorAll('.maptype button')
-      //   .forEach(elm => elm.classList.remove('active'));
-      e.target.classList.toggle('active');
+      document.querySelectorAll('.maptype button')
+        .forEach(elm => elm.classList.remove('active'));
+      e.target.classList.add('active');
+      // e.target.classList.toggle('active');
 
       filterParams.mapType = e.target.dataset.value;
     });
