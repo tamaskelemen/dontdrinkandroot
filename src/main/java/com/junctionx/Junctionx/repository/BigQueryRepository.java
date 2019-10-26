@@ -109,7 +109,7 @@ public class BigQueryRepository {
 
 	public ObjectNode animalPath(String animal, String from, String to) {
 		try {
-			String pathQuery = "SELECT individual_local_identifier, location_long, location_lat FROM iotds." + animal + "_data WHERE (location_long NOT LIKE 'NA' AND location_lat NOT LIKE 'NA')AND timestamp BETWEEN  '"+ from + " 00:00:00' AND '" + to + " 23:59:59'  ORDER BY timestamp ASC LIMIT 2000;";
+			String pathQuery = "SELECT device_id, longitude, latitude FROM iotds.bulk_data WHERE animal LIKE '" + animal + "' AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA')AND timestamp BETWEEN  '"+ from + " 00:00:00' AND '" + to + " 23:59:59'  ORDER BY timestamp ASC LIMIT 2000;";
 
 			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(pathQuery)
 					.setUseLegacySql(false).build();
@@ -139,9 +139,9 @@ public class BigQueryRepository {
 			for (FieldValueList row : tableResult.iterateAll()) {
 				ObjectNode objectNode = asd.createObjectNode();
 
-				String id = row.get("individual_local_identifier").getStringValue();
-				Double lat = row.get("location_lat").getDoubleValue();
-				Double lng = row.get("location_long").getDoubleValue();
+				String id = row.get("device_id").getStringValue();
+				Double lat = row.get("latitude").getDoubleValue();
+				Double lng = row.get("longitude").getDoubleValue();
 
 				objectNode.put("lat", lat);
 				objectNode.put("lng", lng);
@@ -170,7 +170,7 @@ public class BigQueryRepository {
 
 	public ObjectNode pathDateRange(String animal, String from, String to) {
 		try {
-			String pathFromTo = "SELECT individual_local_identifier, location_long, location_lat FROM iotds." + animal + "_data WHERE (location_long NOT LIKE 'NA' AND location_lat NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC LIMIT 2000;";
+			String pathFromTo = "SELECT device_id, longitude, latitude FROM iotds.bulk_data WHERE animal like '" + animal + "' AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC LIMIT 2000;";
 
 			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(pathFromTo)
 					.setUseLegacySql(false).build();
@@ -200,9 +200,9 @@ public class BigQueryRepository {
 			for (FieldValueList row : tableResult.iterateAll()) {
 				ObjectNode objectNode = asd.createObjectNode();
 
-				String id = row.get("individual_local_identifier").getStringValue();
-				Double lat = row.get("location_lat").getDoubleValue();
-				Double lng = row.get("location_long").getDoubleValue();
+				String id = row.get("device_id").getStringValue();
+				Double lat = row.get("latitude").getDoubleValue();
+				Double lng = row.get("longitude").getDoubleValue();
 
 				objectNode.put("lat", lat);
 				objectNode.put("lng", lng);
@@ -230,7 +230,7 @@ public class BigQueryRepository {
 
 	public List<ObjectNode> heatmapDateRange(String animal, String from, String to) {
 		try {
-			String heatmapFromTo = "SELECT location_long, location_lat FROM iotds." + animal + "_data WHERE (location_long NOT LIKE 'NA' AND location_lat NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC LIMIT 2000;";
+			String heatmapFromTo = "SELECT longitude, latitude FROM iotds.bulk_data WHERE animal LIKE '" + animal + "' AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC LIMIT 2000;";
 
 			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(heatmapFromTo)
 					.setUseLegacySql(false).build();
@@ -261,8 +261,8 @@ public class BigQueryRepository {
 
 				ObjectNode objectNode = asd.createObjectNode();
 
-				Double lat = row.get("location_lat").getDoubleValue();
-				Double lng = row.get("location_long").getDoubleValue();
+				Double lat = row.get("latitude").getDoubleValue();
+				Double lng = row.get("longitude").getDoubleValue();
 
 				objectNode.put("lat", lat);
 				objectNode.put("lng", lng);
