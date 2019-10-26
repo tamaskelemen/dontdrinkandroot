@@ -1,91 +1,37 @@
-// "use strict"
-//
-// console.log(map);
-
-const data = [
-  [{ x: 52.099878, y: 9.994248 }, { x: 49.789746, y: 9.524684 }, { x: 49.055821, y: 19.224688 }],
-  [{ x: 51.727729, y: 20.667571 }, { x: 49.457914, y: 13.458649 }, { x: 48.501431, y: 5.243380 }],
-];
+"use strict";
 
 window.addEventListener('load', () => {
-  const geojson = {
-    'type': 'FeatureCollection',
-    'features': [{
-      'type': 'Feature',
-      'geometry': {
-        'type': 'LineString',
-        'coordinates': [
-          [0, 0],
-        ],
-      },
-    }],
-  };
 
-  var speedFactor = 30; // number of frames per longitude degree
-  var animation; // to store and cancel the animation
-  var startTime = 0;
-  var progress = 0; // progress = timestamp - startTime
-  var resetTime = false; // indicator of whether time reset is needed for the animation
+  map.on('click', function () {
 
-  map.on('load', function () {
-    map.addLayer({
-      'id': 'line-animation',
-      'type': 'line',
-      'source': {
-        'type': 'geojson',
-        'data': geojson,
-      },
-      'layout': {
-        'line-cap': 'round',
-        'line-join': 'round',
-      },
-      'paint': {
-        'line-color': '#ed6498',
-        'line-width': 5,
-        'line-opacity': .8,
-      },
+    geojson.features[0].geometry.coordinates = [];
+
+     var array = [[-122.48369693756104, 37.83381888486939],
+        [-122.48348236083984, 37.83317489144141],
+        [-122.48339653015138, 37.83270036637107],
+        [-122.48356819152832, 37.832056363179625],
+        [-122.48404026031496, 37.83114119107971],
+        [-122.48404026031496, 37.83049717427869],
+        [-122.48348236083984, 37.829920943955045],
+        [-122.48356819152832, 37.82954808664175],
+        [-122.48507022857666, 37.82944639795659],
+        [-122.48610019683838, 37.82880236636284],
+        [-122.48695850372314, 37.82931081282506],
+        [-122.48700141906738, 37.83080223556934],
+        [-122.48751640319824, 37.83168351665737],
+        [-122.48803138732912, 37.832158048267786],
+        [-122.48888969421387, 37.83297152392784],
+        [-122.48987674713133, 37.83263257682617],
+        [-122.49043464660643, 37.832937629287755],
+        [-122.49125003814696, 37.832429207817725],
+        [-122.49163627624512, 37.832564787218985],
+        [-122.49223709106445, 37.83337825839438],
+        [-122.49378204345702, 37.83368330777276]];
+
+    array.forEach(item => {
+      geojson.features[0].geometry.coordinates.push(item);
     });
 
-    startTime = performance.now();
-
-    var counter = 0;
-
-    animateLine();
-
-    document.addEventListener('visibilitychange', function () {
-      resetTime = true;
-    });
-
-    function animateLine(timestamp) {
-      console.log(counter);
-      if (counter++ === data.length) {
-        geojson.features[0].geometry.coordinates = [];
-        counter = 0;
-      }
-      // if (resetTime) {
-      //   startTime = performance.now() - progress;
-      //   resetTime = false;
-      // } else {
-      //   progress = timestamp - startTime;
-      // }
-
-      // if (progress > speedFactor * 360) {
-      //   startTime = timestamp;
-      //   geojson.features[0].geometry.coordinates = [];
-      // } else {
-      // var x = progress / speedFactor;
-      // var y = Math.sin(x * Math.PI / 90) * 40;
-      // geojson.features[0].geometry.coordinates.push([x, y]);
-      for (let i = 0; i < 2; i++) {
-        const { x, y } = data[i][counter];
-        geojson.features[0].geometry.coordinates.push([y, x]);
-      }
-      map.getSource('line-animation').setData(geojson);
-      // }
-
-      setTimeout(() => {
-        animation = requestAnimationFrame(animateLine);
-      }, 1000);
-    }
+    map.getSource('line-animation').setData(geojson);
   });
 });
