@@ -11,16 +11,17 @@ import com.junctionx.Junctionx.repository.BigQueryRepository;
 import java.util.List;
 
 @Controller
-public class AnimalPathController {
+public class PathDateRangeController {
 
     @Autowired
     BigQueryRepository bigQueryRepository;
 
-    @RequestMapping(value = "/animal-path/{animal}/device/{date}", method = RequestMethod.GET)
+    @RequestMapping(value = "/path-date-range/{animal}/{from}/{to}", method = RequestMethod.GET)
 
     @ResponseBody
-    public ObjectNode getMovement(@PathVariable String animal, @PathVariable String date) {
+    public ObjectNode getMovement(@PathVariable String animal, @PathVariable String from, @PathVariable String to) {
 
-        return bigQueryRepository.animalPath(animal, date);
+        return bigQueryRepository.pathDateRange(animal, from, to);
     }
+
 }

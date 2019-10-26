@@ -109,7 +109,7 @@ public class BigQueryRepository {
 
 	public ObjectNode animalPath(String animal, String date) {
 		try {
-			String pathQuery = "SELECT individual_local_identifier, location_long, location_lat FROM iotds." + animal + "_data WHERE (location_long NOT LIKE 'NA' AND location_lat NOT LIKE 'NA') AND timestamp BETWEEN  '"+ date +" 00:00:00' AND '" + date + " 23:59:59' ORDER BY timestamp ASC LIMIT 1000";
+			String pathQuery = "SELECT individual_local_identifier, location_long, location_lat FROM iotds." + animal + "_data WHERE (location_long NOT LIKE 'NA' AND location_lat NOT LIKE 'NA') AND timestamp BETWEEN  '"+ date +" 00:00:00' AND '" + date + " 23:59:59' ORDER BY timestamp ASC;";
 
 			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(pathQuery)
 					.setUseLegacySql(false).build();
@@ -139,7 +139,6 @@ public class BigQueryRepository {
 			for (FieldValueList row : tableResult.iterateAll()) {
 				ObjectNode objectNode = asd.createObjectNode();
 
-
 				String id = row.get("individual_local_identifier").getStringValue();
 				Double lat = row.get("location_lat").getDoubleValue();
 				Double lng = row.get("location_long").getDoubleValue();
@@ -157,12 +156,8 @@ public class BigQueryRepository {
 							temp.add(objectNode);
 						}
 
-
-
 				kulso.set(id, temp);
-
 			}
-			//result.add(kulso);
 
 			return kulso;
 
@@ -173,4 +168,63 @@ public class BigQueryRepository {
 		return null;
 	}
 
+	public ObjectNode pathDateRange(String animal, String from, String to) {
+		try {
+			String pathFromTo = "SELECT individual_local_identifier, location_long, location_lat FROM iotds." + animal + "_data WHERE (location_long NOT LIKE 'NA' AND location_lat NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC;";
+
+			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(pathFromTo)
+					.setUseLegacySql(false).build();
+
+			JobId jobId = JobId.of(UUID.randomUUID().toString());
+			Job queryJob = bigQuery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());
+
+			queryJob = queryJob.waitFor();
+
+			// Check for errors
+			if (queryJob == null) {
+				throw new RuntimeException("Job no longer exists");
+			} else if (queryJob.getStatus().getError() != null) {
+				// You can also look at queryJob.getStatus().getExecutionErrors() for all
+				// errors, not just the latest one.
+				throw new RuntimeException(queryJob.getStatus().getError().toString());
+			}
+
+			// Get the results.
+			TableResult tableResult = queryJob.getQueryResults();
+			ObjectMapper asd = new ObjectMapper();
+
+			//ArrayNode result = asd.createArrayNode();
+			// Print all pages of the results.
+			ObjectNode kulso = asd.createObjectNode();
+
+			for (FieldValueList row : tableResult.iterateAll()) {
+				ObjectNode objectNode = asd.createObjectNode();
+
+				String id = row.get("individual_local_identifier").getStringValue();
+				Double lat = row.get("location_lat").getDoubleValue();
+				Double lng = row.get("location_long").getDoubleValue();
+
+				objectNode.put("lat", lat);
+				objectNode.put("lng", lng);
+				objectNode.put("animal", animal);
+
+				ArrayNode temp = (ArrayNode) kulso.get(id);
+				if (temp == null) {
+					temp = asd.createArrayNode();
+					temp.add(objectNode);
+				} else {
+					temp.add(objectNode);
+				}
+
+				kulso.set(id, temp);
+			}
+
+			return kulso;
+
+		} catch (Exception e) {
+			log.error("----------error: ", e);
+		}
+
+		return null;
+	}
 }
