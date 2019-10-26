@@ -228,7 +228,7 @@ public class BigQueryRepository {
 		return null;
 	}
 
-	public List<List<Double>> heatmapDateRange(String animal, String from, String to) {
+	public List<ObjectNode> heatmapDateRange(String animal, String from, String to) {
 		try {
 			String heatmapFromTo = "SELECT location_long, location_lat FROM iotds." + animal + "_data WHERE (location_long NOT LIKE 'NA' AND location_lat NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC LIMIT 2000;";
 
@@ -251,16 +251,23 @@ public class BigQueryRepository {
 
 			// Get the results.
 			TableResult tableResult = queryJob.getQueryResults();
+			ObjectMapper asd = new ObjectMapper();
 
 			//ArrayNode result = asd.createArrayNode();
 			// Print all pages of the results.
-			List<List<Double>> result = new ArrayList<>();
+			List<ObjectNode> result = new ArrayList<>();
 			// Print all pages of the results.
 			for (FieldValueList row : tableResult.iterateAll()) {
+
+				ObjectNode objectNode = asd.createObjectNode();
+
 				Double lat = row.get("location_lat").getDoubleValue();
 				Double lng = row.get("location_long").getDoubleValue();
-				List<Double> temp = Arrays.asList(lat,lng);
-				result.add(temp);
+
+				objectNode.put("lat", lat);
+				objectNode.put("lng", lng);
+
+				result.add(objectNode);
 			}
 			return result;
 
