@@ -90,14 +90,14 @@ window.addEventListener('load', () => {
     },
   });
 
-  $('#apply-button')
-    .on('click', () => {
-      console.log(filterParams);
-      fetch('http://localhost:8080/animal-path/stock/device/heythere')
-        .then(res => res.json())
-        .then(data => drawLines(data))
-        .catch(console.error);
-    });
+  // $('#apply-button')
+  //   .on('click', () => {
+  //     console.log(filterParams);
+  //     fetch('http://localhost:8080/movement')
+  //       .then(res => res.json())
+  //       .then(data => drawLines(data))
+  //       .catch(console.error);
+  //   });
 
   $('[data-value="lines"]').click();
 });

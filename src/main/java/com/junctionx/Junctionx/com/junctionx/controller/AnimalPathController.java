@@ -20,7 +20,6 @@ public class AnimalPathController {
     BigQueryRepository bigQueryRepository;
 
     @RequestMapping(value = "/animal-path/{animal}/device/{date}", method = RequestMethod.GET)
-
     @ResponseBody
     public ObjectNode getMovement(@PathVariable String animal, @PathVariable String date) {
 
