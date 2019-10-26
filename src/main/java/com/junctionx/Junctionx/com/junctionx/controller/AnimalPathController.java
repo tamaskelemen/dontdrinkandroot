@@ -10,6 +10,7 @@ import com.junctionx.Junctionx.repository.BigQueryRepository;
 
 import java.util.List;
 
+@CrossOrigin
 @Controller
 public class AnimalPathController {
 

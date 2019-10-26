@@ -3,3 +3,4 @@ import 'ion-rangeslider/css/ion.rangeSlider.min.css';
 
 import './toolbar';
 import './layer-lines';
+import './layer-population-density';

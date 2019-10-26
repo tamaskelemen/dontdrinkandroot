@@ -66,11 +66,15 @@ window.addEventListener('load', () => {
       }, {
         name: 'Custom',
         value: 'c',
+      // }, {
+      //   name: 'Fixed date',
+      //   value: 'f',
       }],
       onChange: function (value) {
         filterParams.timespan = value;
 
         document.querySelector('.custom-timespan').classList.toggle('active', value === 'c');
+        document.querySelector('.fixed-timespan').classList.toggle('active', value === 'f');
       },
     });
 
@@ -89,7 +93,7 @@ window.addEventListener('load', () => {
   $('#apply-button')
     .on('click', () => {
       console.log(filterParams);
-      fetch('http://localhost:8080/movement')
+      fetch('http://localhost:8080/animal-path/stock/device/heythere')
         .then(res => res.json())
         .then(data => drawLines(data))
         .catch(console.error);
