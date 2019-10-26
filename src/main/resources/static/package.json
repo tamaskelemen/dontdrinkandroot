@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@mapbox/mapbox-gl-traffic": "^1.0.2",
-    "mapbox-gl": "^1.5.0",
+    "mapbox-gl": "^0.29.0",
     "parcel": "^1.12.4"
   }
 }
