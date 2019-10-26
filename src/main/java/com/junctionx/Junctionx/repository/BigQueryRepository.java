@@ -26,6 +26,7 @@ public class BigQueryRepository {
 	BigQuery bigQuery;
 
 	public String query = "SELECT * FROM iotds.temp_sensor LIMIT 1000;";
+	public String storkQuery = "SELECT * FROM iotds.stork_data WHERE DATE(_PARTITIONTIME) = '2019-10-26' LIMIT 1000;";
 
 	public List<List<Double>> getCoordinates() {
 		try {
@@ -53,13 +54,50 @@ public class BigQueryRepository {
 			// Print all pages of the results.
 			for (FieldValueList row : tableResult.iterateAll()) {
 				Double lat = row.get("lat").getDoubleValue();
-				Double lng = row.get("lat").getDoubleValue();
+				Double lng = row.get("lng").getDoubleValue();
 				List<Double> temp = Arrays.asList(lat,lng);
 				result.add(temp);
 			}
 			return result;
 		} catch (Exception e) {
 			log.error("----------------Error:", e);
+			return null;
+		}
+	}
+
+	public List<List<Double>> getMonthlyCoord() {
+		try {
+			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(storkQuery)
+					.setUseLegacySql(false).build();
+
+			JobId jobId = JobId.of(UUID.randomUUID().toString());
+			Job queryJob = bigQuery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());
+
+			queryJob = queryJob.waitFor();
+
+			// Check for errors
+			if (queryJob == null) {
+				throw new RuntimeException("Job no longer exists");
+			} else if (queryJob.getStatus().getError() != null) {
+				// You can also look at queryJob.getStatus().getExecutionErrors() for all
+				// errors, not just the latest one.
+				throw new RuntimeException(queryJob.getStatus().getError().toString());
+			}
+
+			// Get the results.
+			TableResult tableResult = queryJob.getQueryResults();
+
+			List<List<Double>> result = new ArrayList<>();
+			// Print all pages of the results.
+			for (FieldValueList row : tableResult.iterateAll()) {
+				Double lat = row.get("lat").getDoubleValue();
+				Double lng = row.get("lng").getDoubleValue();
+				List<Double> temp = Arrays.asList(lat,lng);
+				result.add(temp);
+			}
+			return result;
+		} catch (Exception e) {
+			log.error("----------------Error: ", e);
 			return null;
 		}
 	}

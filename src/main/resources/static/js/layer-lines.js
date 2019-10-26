@@ -1,17 +1,27 @@
-"use strict";
+window.onload = function () {
+  const sendButton = document.getElementById('send');
 
-window.addEventListener('load', () => {
+  sendButton.addEventListener('click', function () {
 
-  map.on('click', function () {
+    fetch('http://localhost:8080/movement')
+      .then(res => res.json())
+      .then(json => console.log(json))
+      .catch(console.error);
 
-    geojson.features[0].geometry.coordinates = [];
-
-    jQuery.get("http://localhost:8080/movement", function (data, status) {
-        console.log(data);
-        data.forEach(item => {
-          geojson.features[0].geometry.coordinates.push(item);
-        });
-        map.getSource('line-animation').setData(geojson);
+    var flightPlanCoordinates = [
+      { lat: 37.772, lng: -122.214 },
+      { lat: 21.291, lng: -157.821 },
+      { lat: -18.142, lng: 178.431 },
+      { lat: -27.467, lng: 153.027 },
+    ];
+    var flightPath = new google.maps.Polyline({
+      path: flightPlanCoordinates,
+      geodesic: true,
+      strokeColor: '#FF0000',
+      strokeOpacity: 1.0,
+      strokeWeight: 2,
     });
+
+    flightPath.setMap(map);
   });
-});
+};
