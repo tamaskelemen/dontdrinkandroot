@@ -21,6 +21,9 @@ build/
 *.ipr
 out/
 
+**/package-lock.json
+**/dbconfig.json
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/

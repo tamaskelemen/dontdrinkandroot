@@ -117,3 +117,8 @@ html, body {
 .gm-style-cc {
   display:none;
 }
+
+#apply-button {
+  margin-top: 12px;
+  float: right;
+}
