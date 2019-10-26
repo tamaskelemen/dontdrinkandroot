@@ -2,7 +2,7 @@ window.addEventListener('load', () => {
   $('.accordion')
     .accordion({
       selector: {
-        trigger: '.title .icon',
+        trigger: '.title .icon ',
       },
       exclusive: false,
     });
