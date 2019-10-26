@@ -43,9 +43,10 @@ window.addEventListener('load', () => {
 
   $('.maptype button')
     .on('click', e => {
-      // document.querySelectorAll('.maptype button')
-      //   .forEach(elm => elm.classList.remove('active'));
-      e.target.classList.toggle('active');
+      document.querySelectorAll('.maptype button')
+        .forEach(elm => elm.classList.remove('active'));
+      e.target.classList.add('active');
+      // e.target.classList.toggle('active');
 
       filterParams.mapType = e.target.dataset.value;
     });
@@ -66,11 +67,15 @@ window.addEventListener('load', () => {
       }, {
         name: 'Custom',
         value: 'c',
+      // }, {
+      //   name: 'Fixed date',
+      //   value: 'f',
       }],
       onChange: function (value) {
         filterParams.timespan = value;
 
         document.querySelector('.custom-timespan').classList.toggle('active', value === 'c');
+        document.querySelector('.fixed-timespan').classList.toggle('active', value === 'f');
       },
     });
 
@@ -86,14 +91,14 @@ window.addEventListener('load', () => {
     },
   });
 
-  $('#apply-button')
-    .on('click', () => {
-      console.log(filterParams);
-      fetch('http://localhost:8080/movement')
-        .then(res => res.json())
-        .then(data => drawLines(data))
-        .catch(console.error);
-    });
+  // $('#apply-button')
+  //   .on('click', () => {
+  //     console.log(filterParams);
+  //     fetch('http://localhost:8080/movement')
+  //       .then(res => res.json())
+  //       .then(data => drawLines(data))
+  //       .catch(console.error);
+  //   });
 
   $('[data-value="lines"]').click();
 });

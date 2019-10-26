@@ -56,6 +56,10 @@ html, body {
   display: none;
 }
 
+.fixed-timespan:not(.active) {
+  display: none;
+}
+
 .toolbar {
   display: flex;
   flex-direction: column;
