@@ -1,0 +1,13 @@
+{
+  "name": "static",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "npm ci && parcel build index.html --public-url '.'"
+  },
+  "dependencies": {
+    "parcel": "^1.12.4"
+  }
+}
