@@ -4,6 +4,7 @@
   left: 0;
   width: calc(100% - 300px);
   height: 100%;
+  transition: all .5s ease,-webkit-transform .5s ease;
 }
 
 html, body {
@@ -66,4 +67,26 @@ html, body {
 
 .button.primary {
   background-color: #343a40 !important;
+}
+
+.open-close-button {
+  position: absolute;
+  left: -22px;
+  top: 14px;
+}
+
+.animals .header {
+  margin-left: 12px !important;
+}
+
+.toolbar {
+  transition: all .5s ease,-webkit-transform .5s ease;
+}
+
+.content.closed .toolbar {
+  right: -284px;
+}
+
+.content.closed #map {
+  width: calc(100% - 16px);
 }
