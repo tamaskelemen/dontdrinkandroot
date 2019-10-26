@@ -4,6 +4,7 @@ window.onload = function () {
 
   let animalsWays = [];
   let heatmaps = [];
+  let territoryMaps = [];
 
   applyButton.addEventListener('click', function () {
     const linesIsActive = $('#lines').hasClass('active');
@@ -11,6 +12,19 @@ window.onload = function () {
     const territoryIsActive = $('#territory').hasClass('active');
 
     applyButton.classList.add('loading');
+
+    if (window.test.species.includes('Stork')) {
+      fetch('http://localhost:8080//stork-data/')
+          .then(res => res.json())
+          .then(json => {
+            addLinesToMap(json, linesIsActive);
+            addHeatmapToMap(json, heatmapIsActive);
+            addTerritoryToMap(json, territoryIsActive);
+
+              applyButton.classList.remove('loading');
+          })
+          .catch(console.error);
+    }
 
     fetch('http://localhost:8080//animal-path/stork/device/2013-10-26')
       .then(res => res.json())
@@ -61,18 +75,25 @@ window.onload = function () {
     }
   }
 
-    function addTerritoryToMap(territoryData) {
-        // for (const value in territoryData) {
-        //     const bermudaTriangle = new google.maps.Polygon({
-        //         paths: territoryData[value],
-        //         strokeColor: '#FF0000',
-        //         strokeOpacity: 0.8,
-        //         strokeWeight: 2,
-        //         fillColor: '#FF0000',
-        //         fillOpacity: 0.35
-        //     });
-        //     bermudaTriangle.setMap(map);
-        // }
+    function addTerritoryToMap(territoryData, isActive) {
+      if (!isActive) {
+        for (let i in territoryMaps) {
+            territoryMaps[i].setMap(null);
+        }
+        return territoryMaps = [];
+      }
+      for (const value in territoryData) {
+          const territoryMap = new google.maps.Polygon({
+            paths: territoryData[value],
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35
+        });
+        territoryMap.setMap(map);
+        territoryMaps.push(territoryMap);
+        }
     }
 
 };

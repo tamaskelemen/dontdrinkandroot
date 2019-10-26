@@ -1,5 +1,3 @@
-import { drawLines } from './layer-lines';
-
 let filterParams = {
   species: [],
   mapType: '',
