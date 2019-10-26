@@ -38,9 +38,9 @@ window.onload = function () {
       return fetch('http://localhost:8080/heatmap-date-range/stork/2013-10-26/2013-10-28')
         .then(res => res.json())
         .then(json => {
-          addLinesToMap(json, false);
+          !linesIsActive && addLinesToMap({}, false);
           addHeatmapToMap(json, heatmapIsActive);
-          addTerritoryToMap(json, false);
+          !territoryIsActive && addTerritoryToMap({}, false);
 
           applyButton.classList.remove('loading');
         })
@@ -51,7 +51,7 @@ window.onload = function () {
       .then(res => res.json())
       .then(json => {
         addLinesToMap(json, linesIsActive);
-        // addHeatmapToMap(json, heatmapIsActive);
+        !heatmapIsActive && addHeatmapToMap([], false);
         addTerritoryToMap(json, territoryIsActive);
 
         applyButton.classList.remove('loading');
