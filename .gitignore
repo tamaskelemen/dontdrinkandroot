@@ -24,12 +24,12 @@ out/
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
-/dist/
+**/dist/
 /nbdist/
 /.nb-gradle/
 
 ### VS Code ###
 .vscode/
 
-/node_modules/
-/.cache/
+**/node_modules/
+**/.cache/
