@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.junctionx.Junctionx.repository.BigQueryRepository;
 
+import java.util.List;
+
 @Controller
 public class MovementController {
 
@@ -14,8 +16,7 @@ public class MovementController {
 
 	@GetMapping("/movement")
 	@ResponseBody
-	public String getMovement() {
-		bigQueryRepository.getData();
-		return "";
+	public List<List<Double>> getMovement() {
+		return bigQueryRepository.getCoordinates();
 	}
 }

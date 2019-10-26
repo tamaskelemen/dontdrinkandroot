@@ -8,30 +8,33 @@ import com.google.cloud.bigquery.JobInfo;
 import com.google.cloud.bigquery.QueryJobConfiguration;
 import com.google.cloud.bigquery.TableResult;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 @NoArgsConstructor
+@Slf4j
 public class BigQueryRepository {
 
 	@Autowired
 	BigQuery bigQuery;
 
-	public void getData() {
+	public String query = "SELECT * FROM iotds.temp_sensor LIMIT 1000;";
+
+	public List<List<Double>> getCoordinates() {
 		try {
-			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder("SELECT " + "CONCAT('https://stackoverflow.com/questions/', CAST(id as STRING)) as url, " + "view_count " + "FROM `bigquery-public-data.stackoverflow.posts_questions` " + "WHERE tags like '%google-bigquery%' " + "ORDER BY favorite_count DESC LIMIT 10")
-					// Use standard SQL syntax for queries.
-					// See: https://cloud.google.com/bigquery/sql-reference/
+			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(query)
 					.setUseLegacySql(false).build();
 
-			// Create a job ID so that we can safely retry.
 			JobId jobId = JobId.of(UUID.randomUUID().toString());
 			Job queryJob = bigQuery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());
 
-			// Wait for the query to complete.
 			queryJob = queryJob.waitFor();
 
 			// Check for errors
@@ -44,16 +47,20 @@ public class BigQueryRepository {
 			}
 
 			// Get the results.
-			TableResult result = queryJob.getQueryResults();
+			TableResult tableResult = queryJob.getQueryResults();
 
+			List<List<Double>> result = new ArrayList<>();
 			// Print all pages of the results.
-			for (FieldValueList row : result.iterateAll()) {
-				String url = row.get("url").getStringValue();
-				long viewCount = row.get("view_count").getLongValue();
-				System.out.printf("url: %s views: %d%n", url, viewCount);
+			for (FieldValueList row : tableResult.iterateAll()) {
+				Double lat = row.get("lat").getDoubleValue();
+				Double lng = row.get("lat").getDoubleValue();
+				List<Double> temp = Arrays.asList(lat,lng);
+				result.add(temp);
 			}
+			return result;
 		} catch (Exception e) {
-
+			log.error("----------------Error:", e);
+			return null;
 		}
 	}
 }
