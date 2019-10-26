@@ -3,7 +3,15 @@ window.onload = function () {
   const applyButton = document.getElementById('apply-button');
 
   let animalsWays = [];
-  let heatmaps = [];
+  const heatmap = new HeatmapOverlay(map,
+    {
+      'radius': 15,
+      'maxOpacity': 1,
+      latField: 'lat',
+      lngField: 'lng',
+      valueField: 'count',
+    },
+  );
 
   applyButton.addEventListener('click', function () {
     const linesIsActive = $('#lines').hasClass('active');
@@ -45,20 +53,16 @@ window.onload = function () {
   }
 
   function addHeatmapToMap(heatmapData, isActive) {
-    if (!isActive) {
-      for (let i in heatmaps) {
-        heatmaps[i].setMap(null);
-      }
-      return heatmaps = [];
+    let testData = { data: [] };
+
+    if (isActive) {
+      testData = {
+        max: 8,
+        data: Object.keys(heatmapData).reduce((accumulator, key) => [...accumulator, ...heatmapData[key]], []),
+      };
     }
-    for (const value in heatmapData) {
-      const mappedData = heatmapData[value].map(item => new google.maps.LatLng(item.lat, item.lng));
-      let heatmap = new google.maps.visualization.HeatmapLayer({
-        data: mappedData,
-      });
-      heatmap.setMap(map);
-      heatmaps.push(heatmap);
-    }
+
+    heatmap.setData(testData);
   }
 
   function addTerritoryToMap(territoryData) {

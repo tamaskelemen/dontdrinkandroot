@@ -64,10 +64,6 @@
 				<!--				</div>-->
 			</div>
 		</div>
-		<!--		<h3 class="ui header">Humans</h3>-->
-		<!--		<div class="ui divider"></div>-->
-		<!--		<div class="ui form">-->
-		<!--		</div>-->
 		<div>
 			<button class="ui primary button" id="apply-button" style="margin-top: 32px">
 				Apply
@@ -80,8 +76,17 @@
   var map;
 
   function initMap() {
+    const heatmap = document.createElement('script');
+    heatmap.src = 'https://cdn.jsdelivr.net/npm/heatmapjs@2.0.2/heatmap.min.js';
+    document.body.appendChild(heatmap);
+    heatmap.onload = () => {
+      const heatmapG = document.createElement('script');
+      heatmapG.src = 'https://cdn.jsdelivr.net/npm/gmaps-heatmap@1.0.2/gmaps-heatmap.min.js';
+      document.body.appendChild(heatmapG);
+    };
+
     map = new google.maps.Map(document.getElementById('map'), {
-      center: { lat: -34.397, lng: 150.644 },
+      center: { lat: 26.554136, lng: 18.926735 },
       zoom: 3,
       streetViewControl: false,
       fullscreenControl: false,
