@@ -2,6 +2,17 @@
 
 let actualCountry = undefined;
 let map;
+const geojson = {
+  'type': 'FeatureCollection',
+  'features': [{
+    'type': 'Feature',
+    'geometry': {
+      'type': 'LineString',
+      'coordinates': [
+      ],
+    },
+  }],
+};
 
 window.addEventListener('load', () => {
   mapboxgl.accessToken = 'pk.eyJ1IjoibmVsc25vZHkiLCJhIjoiY2syNmo5cHp3MGJ4NDNyczl5ZjgxZzljZyJ9.hVyim5Txe-nXT1b7C-ucvg';
@@ -33,9 +44,9 @@ window.addEventListener('load', () => {
       'type': 'fill',
       'source': 'states',
       'paint': {
-        'fill-outline-color': '#00b9ff',
-        'fill-color': '#00b9ff',
-        'fill-opacity': 0.5,
+        'fill-outline-color': '#787878',
+        'fill-color': '#787878',
+        'fill-opacity': 0.05,
       },
       'filter': ['in', 'geounit', ''],
     });
@@ -46,7 +57,7 @@ window.addEventListener('load', () => {
       'source': 'states',
       'paint': {
         'fill-color': '#787878',
-        'fill-opacity': 0.5,
+        'fill-opacity': 0.1,
       },
       'filter': ['in', 'geounit', ''],
     });
@@ -63,7 +74,6 @@ window.addEventListener('load', () => {
         actualCountry = feature.properties.geounit;
       }
       map.setFilter('states-highlited', ['in', 'geounit', feature.properties.geounit]);
-
     });
 
     map.on('mousemove', function (e) {
@@ -75,6 +85,24 @@ window.addEventListener('load', () => {
       }
 
       map.setFilter('states-selected', ['in', 'geounit', feature.properties.geounit]);
+    });
+
+    map.addLayer({
+      'id': 'line-animation',
+      'type': 'line',
+      'source': {
+        'type': 'geojson',
+        'data': geojson,
+      },
+      'layout': {
+        'line-cap': 'round',
+        'line-join': 'round',
+      },
+      'paint': {
+        'line-color': '#ed6498',
+        'line-width': 5,
+        'line-opacity': .8,
+      },
     });
 
   });
