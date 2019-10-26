@@ -14,5 +14,17 @@
   top: 0;
   /*background-color: #343a40 !important;*/
   background-color: white;
-  padding: 16px;
+  padding: 24px 16px;
+}
+
+.ui.buttons.fluid button {
+  width: 50%;
+}
+
+.ui.buttons.maptype .active.toggle.button {
+  background-color: #343a40 !important;
+}
+
+.ui.range .inner .track-fill {
+  background-color: #343a40 !important;
 }
