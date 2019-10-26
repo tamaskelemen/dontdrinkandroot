@@ -3,6 +3,11 @@ window.onload = function() {
 
     sendButton.addEventListener('click', function () {
 
+        console.log('asdfsadf');
+        jQuery.get("http://localhost:8080/movement", function (data, status) {
+            console.log(data);
+        });
+
         var flightPlanCoordinates = [
             {lat: 37.772, lng: -122.214},
             {lat: 21.291, lng: -157.821},
