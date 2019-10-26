@@ -1,5 +1,7 @@
 'use strict';
 
+import MapboxTraffic from "@mapbox/mapbox-gl-traffic";
+
 let actualCountry = undefined;
 let map;
 const geojson = {
@@ -23,6 +25,8 @@ window.addEventListener('load', () => {
     center: [-74.50, 40],
     zoom: 3,
   });
+
+  map.addControl(new MapboxTraffic({showTraffic: true, showTrafficButton: true}));
 
   map.on('load', function () {
     map.addSource('states', {
@@ -75,6 +79,7 @@ window.addEventListener('load', () => {
       }
       map.setFilter('states-highlited', ['in', 'geounit', feature.properties.geounit]);
     });
+
 
     map.on('mousemove', function (e) {
       var features = map.queryRenderedFeatures(e.point, { layers: ['states-layer'] });

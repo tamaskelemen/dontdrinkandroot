@@ -8,6 +8,8 @@
     "build": "npm ci && parcel build index.html --public-url '.'"
   },
   "dependencies": {
+    "@mapbox/mapbox-gl-traffic": "^1.0.2",
+    "mapbox-gl": "^1.5.0",
     "parcel": "^1.12.4"
   }
 }
