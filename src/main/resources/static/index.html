@@ -15,52 +15,58 @@
 <div class="content">
 	<div id='map'></div>
 	<div class="toolbar">
-		<h3 class="ui header">Animals</h3>
-		<div class="ui divider"></div>
-		<div class="ui form">
-			<div class="field">
-				<label>Species</label>
-				<select multiple="" class="ui dropdown species"></select>
-			</div>
-			<div class="field">
-				<label>Map type</label>
-				<div class="ui buttons fluid maptype">
-					<button class="ui toggle button active">Lines</button>
-					<button class="ui toggle button">Heatmap</button>
-					<button class="ui toggle button">Territory</button>
-				</div>
-			</div>
-			<div class="field">
-				<label>Time span</label>
-				<select class="ui dropdown timespan"></select>
-			</div>
-			<div class="custom-timespan">
+		<div class="animals">
+			<h3 class="ui header">Animals</h3>
+			<div class="ui divider"></div>
+			<div class="ui form">
 				<div class="field">
-					<label>From</label>
-					<input type="date" />
+					<label>Species</label>
+					<select multiple="" class="ui dropdown species"></select>
 				</div>
 				<div class="field">
-					<label>To</label>
-					<input type="date" />
+					<label>Map type</label>
+					<div class="ui buttons fluid maptype">
+						<button class="ui toggle button active">Lines</button>
+						<button class="ui toggle button">Heatmap</button>
+						<button class="ui toggle button">Territory</button>
+					</div>
 				</div>
-			</div>
-			<div class="field" style="margin-top: 1em;">
-				<label>Animation duration</label>
-				<div class="ui range labeled"></div>
+				<div class="field">
+					<label>Time span</label>
+					<select class="ui dropdown timespan"></select>
+				</div>
+				<div class="custom-timespan">
+					<div class="field">
+						<label>From</label>
+						<input type="date" />
+					</div>
+					<div class="field">
+						<label>To</label>
+						<input type="date" />
+					</div>
+				</div>
+				<div class="field" style="margin-top: 1em;">
+					<label>Animation duration</label>
+					<div class="ui range labeled"></div>
+				</div>
 			</div>
 		</div>
 		<!--		<h3 class="ui header">Humans</h3>-->
 		<!--		<div class="ui divider"></div>-->
 		<!--		<div class="ui form">-->
 		<!--		</div>-->
+		<button class="ui primary button">
+			Apply
+		</button>
 	</div>
 </div>
 <script>
   var map;
+
   function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: -34.397, lng: 150.644},
-      zoom: 8
+      center: { lat: -34.397, lng: 150.644 },
+      zoom: 8,
     });
   }
 </script>

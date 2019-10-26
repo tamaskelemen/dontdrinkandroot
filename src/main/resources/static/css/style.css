@@ -54,3 +54,16 @@ html, body {
 .custom-timespan:not(.active) {
   display: none;
 }
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+}
+
+.animals {
+  flex: 1;
+}
+
+.button.primary {
+  background-color: #343a40 !important;
+}
