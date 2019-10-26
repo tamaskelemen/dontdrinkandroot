@@ -1,12 +1,13 @@
-window.addEventListener('load', () => {
-  $('.accordion')
-    .accordion({
-      selector: {
-        trigger: '.title .icon ',
-      },
-      exclusive: false,
-    });
+let filterParams = {
+  species: [],
+  mapType: '',
+  timespan: '',
+  animationDuration: 10,
+};
 
+window.test = filterParams;
+
+window.addEventListener('load', () => {
   $('.dropdown.species')
     .dropdown({
       placeholder: 'Select species',
@@ -21,6 +22,12 @@ window.addEventListener('load', () => {
         name: 'Frog',
         value: '12',
       }],
+      onAdd: function (value) {
+        filterParams.species.push(value);
+      },
+      onRemove: function (value) {
+        filterParams.species = filterParams.species.filter(spec => spec !== value);
+      },
     });
 
   $('.maptype button')
@@ -28,6 +35,8 @@ window.addEventListener('load', () => {
       document.querySelectorAll('.maptype button')
         .forEach(elm => elm.classList.remove('active'));
       e.target.classList.add('active');
+
+      filterParams.mapType = e.target.dataset.value;
     });
 
   $('.dropdown.timespan')
@@ -48,6 +57,8 @@ window.addEventListener('load', () => {
         value: 'c',
       }],
       onChange: function (value) {
+        filterParams.timespan = value;
+
         document.querySelector('.custom-timespan').classList.toggle('active', value === 'c');
       },
     });
@@ -57,7 +68,17 @@ window.addEventListener('load', () => {
     min: 2,
     max: 30,
     step: 1,
-    from: 10,
+    from: filterParams.animationDuration,
     prettify: val => `${val}s`,
+    onChange: (a, b, c) => {
+      filterParams.animationDuration = a.from;
+    },
   });
+
+  $('#apply-button')
+    .on('click', () => {
+
+    });
+
+  $('[data-value="lines"]').click();
 });

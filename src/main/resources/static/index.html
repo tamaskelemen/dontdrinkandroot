@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 <head>
 	<meta charset='utf-8' />
 	<title>Display a map</title>
@@ -9,7 +10,25 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
-	<script src="js/index.js"></script>
+	<meta name="viewport" content="initial-scale=1.0">
+    <link href="css/style.css">
+    <meta charset="utf-8">
+    <script src="js/index.js"></script>
+    <style>
+        #map {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: calc(100% - 300px);
+			height: 100%;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
 <div class="content">
@@ -26,9 +45,9 @@
 				<div class="field">
 					<label>Map type</label>
 					<div class="ui buttons fluid maptype">
-						<button class="ui toggle button active">Lines</button>
-						<button class="ui toggle button">Heatmap</button>
-						<button class="ui toggle button">Territory</button>
+						<button class="ui toggle button" data-value="lines">Lines</button>
+						<button class="ui toggle button" data-value="heat">Heatmap</button>
+						<button class="ui toggle button" data-value="terr">Territory</button>
 					</div>
 				</div>
 				<div class="field">
@@ -50,12 +69,15 @@
 					<div class="ui range labeled"></div>
 				</div>
 			</div>
+			<div>
+				<button id="send">Send</button>
+			</div>
 		</div>
 		<!--		<h3 class="ui header">Humans</h3>-->
 		<!--		<div class="ui divider"></div>-->
 		<!--		<div class="ui form">-->
 		<!--		</div>-->
-		<button class="ui primary button">
+		<button class="ui primary button" id="apply-button">
 			Apply
 		</button>
 	</div>
@@ -71,5 +93,6 @@
   }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC40Ygve-HsjP0ET6yBRmomWT457jv7KTg&callback=initMap"
-				async defer></script>
+		async defer></script>
 </body>
+</html>
