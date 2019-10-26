@@ -67,8 +67,12 @@ window.onload = function () {
       return animalsWays = [];
     }
     for (const value in linesData) {
+        // let lat = linesData[value].map(item =>  item.lat);
+        // let lng = linesData[value].map(item =>  item.lng);
+        // let path = bspline(lat, lng);
       let animalsWay = new google.maps.Polyline({
         geodesic: true,
+        // path: path,
         path: linesData[value],
         strokeColor: '#FF0000',
         strokeOpacity: 1.0,
@@ -112,5 +116,37 @@ window.onload = function () {
       territoryMaps.push(territoryMap);
     }
   }
+
+    function bspline(lats, lngs) {
+        let i, t, ax, ay, bx, by, cx, cy, dx, dy, lat, lng, points;
+        points = [];
+
+        for (i = 2; i < lats.length - 2; i++) {
+            for (t = 0; t < 1; t += 0.2) {
+                ax = (-lats[i - 2] + 3 * lats[i - 1] - 3 * lats[i] + lats[i + 1]) / 6;
+                ay = (-lngs[i - 2] + 3 * lngs[i - 1] - 3 * lngs[i] + lngs[i + 1]) / 6;
+
+                bx = (lats[i - 2] - 2 * lats[i - 1] + lats[i]) / 2;
+                by = (lngs[i - 2] - 2 * lngs[i - 1] + lngs[i]) / 2;
+
+                cx = (-lats[i - 2] + lats[i]) / 2;
+                cy = (-lngs[i - 2] + lngs[i]) / 2;
+
+                dx = (lats[i - 2] + 4 * lats[i - 1] + lats[i]) / 6;
+                dy = (lngs[i - 2] + 4 * lngs[i - 1] + lngs[i]) / 6;
+
+                lat = (ax * Math.pow(t + 0.1, 3)) +
+                    (bx * Math.pow(t + 0.1, 2)) +
+                    (cx * (t + 0.1)) + dx;
+
+                lng = (ay * Math.pow(t + 0.1, 3)) +
+                    (by * Math.pow(t + 0.1, 2)) +
+                    (cy * (t + 0.1)) + dy;
+
+                points.push(new google.maps.LatLng(lat, lng));
+            }
+        }
+        return points;
+    }
 
 };

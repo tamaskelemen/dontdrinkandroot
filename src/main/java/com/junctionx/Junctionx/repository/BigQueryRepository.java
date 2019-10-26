@@ -109,7 +109,7 @@ public class BigQueryRepository {
 
 	public ObjectNode animalPath(String animal, String date) {
 		try {
-			String pathQuery = "SELECT individual_local_identifier, location_long, location_lat FROM iotds." + animal + "_data WHERE (location_long NOT LIKE 'NA' AND location_lat NOT LIKE 'NA') AND timestamp BETWEEN  '"+ date +" 00:00:00' AND '" + date + " 23:59:59' ORDER BY timestamp ASC LIMIT 2000;";
+			String pathQuery = "SELECT individual_local_identifier, location_long, location_lat FROM iotds." + animal + "_data WHERE (location_long NOT LIKE 'NA' AND location_lat NOT LIKE 'NA') AND timestamp BETWEEN  '"+ date +" 00:00:00' AND '" + date + " 23:59:59' ORDER BY timestamp ASC;";
 
 			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(pathQuery)
 					.setUseLegacySql(false).build();
@@ -170,7 +170,7 @@ public class BigQueryRepository {
 
 	public ObjectNode pathDateRange(String animal, String from, String to) {
 		try {
-			String pathFromTo = "SELECT individual_local_identifier, location_long, location_lat FROM iotds." + animal + "_data WHERE (location_long NOT LIKE 'NA' AND location_lat NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC LIMIT 2000;";
+			String pathFromTo = "SELECT individual_local_identifier, location_long, location_lat FROM iotds." + animal + "_data WHERE (location_long NOT LIKE 'NA' AND location_lat NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC;";
 
 			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(pathFromTo)
 					.setUseLegacySql(false).build();
