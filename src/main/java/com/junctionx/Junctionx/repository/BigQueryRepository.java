@@ -168,21 +168,9 @@ public class BigQueryRepository {
 		return null;
 	}
 
-	public ObjectNode pathDateRange(String animals, String from, String to) {
+	public ObjectNode pathDateRange(String animal, String from, String to) {
 		try {
-			String[] split = animals.split("\\+");
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < split.length; i++) {
-				sb.append("'");
-				sb.append(split[i]);
-				sb.append("'");
-				if (i != split.length - 1) {
-					sb.append(", ");
-				}
-			}
-			String joined = sb.toString();
-
-			String pathFromTo = "SELECT device_id, longitude, latitude, animal FROM iotds.bulk_data WHERE animal IN (" + joined + ") AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC;";
+			String pathFromTo = "SELECT device_id, longitude, latitude FROM iotds.bulk_data WHERE animal like '" + animal + "' AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC;";
 
 			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(pathFromTo)
 					.setUseLegacySql(false).build();
@@ -218,7 +206,7 @@ public class BigQueryRepository {
 
 				objectNode.put("lat", lat);
 				objectNode.put("lng", lng);
-				objectNode.put("animal", row.get("animal").getStringValue());
+				objectNode.put("animal", animal);
 
 				ArrayNode temp = (ArrayNode) kulso.get(id);
 				if (temp == null) {
@@ -342,7 +330,6 @@ public class BigQueryRepository {
 			}
 			String joined = sb.toString();
 
-
 			String pathFromTo = "SELECT device_id, longitude, latitude, animal FROM iotds.aggregated_bulk_data WHERE  animal IN (" + joined + ") AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC;";
 
             QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(pathFromTo)
@@ -379,7 +366,7 @@ public class BigQueryRepository {
 
                 objectNode.put("lat", lat);
                 objectNode.put("lng", lng);
-				objectNode.put("animal", row.get("animal").getStringValue());
+                objectNode.put("animal", animal);
 
                 ArrayNode temp = (ArrayNode) kulso.get(id);
                 if (temp == null) {

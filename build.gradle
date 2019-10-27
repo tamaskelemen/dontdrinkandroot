@@ -41,7 +41,6 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.3'
-	runtimeOnly project(':junctionxweb')
 }
 
 dependencyManagement {
