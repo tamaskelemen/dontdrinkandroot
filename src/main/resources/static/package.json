@@ -5,13 +5,12 @@
   "license": "MIT",
   "scripts": {
     "start": "parcel index.html",
-    "build": "npm ci && parcel build index.html --public-url '.'"
+    "build": "npm ci && parcel build index.html --public-url './'"
   },
   "dependencies": {
-    "@mapbox/mapbox-gl-traffic": "^1.0.2",
-    "bootstrap": "^4.3.1",
+    "google-apis": "^1.0.0",
+    "google-map": "^1.1.0",
     "ion-rangeslider": "^2.3.0",
-    "mapbox-gl": "^0.29.0",
     "moment": "^2.24.0",
     "parcel": "^1.12.4"
   }

@@ -29,8 +29,8 @@ public class BigQueryRepository {
 	@Autowired
 	BigQuery bigQuery;
 
-	public String query = "SELECT * FROM iotds.temp_sensor LIMIT 1000;";
-	public String storkQuery = "SELECT * FROM iotds.stork_data WHERE DATE(timestamp) = '2019-10-26' LIMIT 1000;";
+	public String query = "SELECT * FROM iotds.temp_sensor;";
+	public String storkQuery = "SELECT * FROM iotds.stork_data WHERE DATE(timestamp) = '2019-10-26';";
 
 	public List<List<Double>> getCoordinates() {
 		try {
@@ -109,7 +109,7 @@ public class BigQueryRepository {
 
 	public ObjectNode animalPath(String animal, String from, String to) {
 		try {
-			String pathQuery = "SELECT device_id, longitude, latitude FROM iotds.bulk_data WHERE animal LIKE '" + animal + "' AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA')AND timestamp BETWEEN  '"+ from + " 00:00:00' AND '" + to + " 23:59:59'  ORDER BY timestamp ASC LIMIT 2000;";
+			String pathQuery = "SELECT device_id, longitude, latitude FROM iotds.bulk_data WHERE animal LIKE '" + animal + "' AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA')AND timestamp BETWEEN  '"+ from + " 00:00:00' AND '" + to + " 23:59:59'  ORDER BY timestamp ASC;";
 
 			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(pathQuery)
 					.setUseLegacySql(false).build();
@@ -170,7 +170,7 @@ public class BigQueryRepository {
 
 	public ObjectNode pathDateRange(String animal, String from, String to) {
 		try {
-			String pathFromTo = "SELECT device_id, longitude, latitude FROM iotds.bulk_data WHERE animal like '" + animal + "' AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC LIMIT 2000;";
+			String pathFromTo = "SELECT device_id, longitude, latitude FROM iotds.bulk_data WHERE animal like '" + animal + "' AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC;";
 
 			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(pathFromTo)
 					.setUseLegacySql(false).build();
@@ -230,7 +230,7 @@ public class BigQueryRepository {
 
 	public List<ObjectNode> heatmapDateRange(String animal, String from, String to) {
 		try {
-			String heatmapFromTo = "SELECT longitude, latitude FROM iotds.bulk_data WHERE animal LIKE '" + animal + "' AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC LIMIT 2000;";
+			String heatmapFromTo = "SELECT longitude, latitude FROM iotds.bulk_data WHERE animal LIKE '" + animal + "' AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC;";
 
 			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(heatmapFromTo)
 					.setUseLegacySql(false).build();
