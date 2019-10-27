@@ -8,7 +8,7 @@ window.onload = function () {
   let territoryMaps = [];
 
   applyButton.addEventListener('click', function () {
-    const species = filterParams.species === [] ? [] : filterParams.species.reduce((a,b) => `${a},${b}`);
+    const species = filterParams.species === [] ? [] : filterParams.species.reduce((a, b) => `${a},${b}`);
 
     const linesIsActive = $('#lines').hasClass('active');
     const heatmapIsActive = $('#heatmap').hasClass('active');
@@ -42,26 +42,26 @@ window.onload = function () {
 
           applyButton.classList.remove('loading');
         })
-        .catch( error => {
+        .catch(error => {
           console.error(error);
           applyButton.classList.remove('loading');
         });
     }
-    if ((linesIsActive || territoryIsActive) && species !== []) {
-      console.log(fromDate);
+    if ((linesIsActive || territoryIsActive)) {
       fetch(`http://localhost:8080/animal-path/${species}/${fromDate}/${toDate}`)
         .then(res => res.json())
         .then(json => {
+          // animateLinesToMap(json);
           addLinesToMap(json, linesIsActive);
           !heatmapIsActive && addHeatmapToMap([], false);
           addTerritoryToMap(json, territoryIsActive);
 
           applyButton.classList.remove('loading');
         })
-          .catch( error => {
-            console.error(error);
-            applyButton.classList.remove('loading');
-          });
+        .catch(error => {
+          console.error(error);
+          applyButton.classList.remove('loading');
+        });
     }
   });
 
@@ -121,6 +121,67 @@ window.onload = function () {
       territoryMap.setMap(map);
       territoryMaps.push(territoryMap);
     }
+  }
+
+  function animateLinesToMap(linesData, duration = 20) {
+    let lines = {};
+    Object.keys(linesData).forEach(key => {
+      lines[key] = [new google.maps.Polyline({
+        geodesic: true,
+        path: [],
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2,
+      })];
+      lines[key][0].setMap(map);
+    });
+
+    let startTime = new Date().getTime();
+    let prevProgress = 0;
+
+    function animate() {
+      const progress = (new Date().getTime() - startTime) / (duration * 1000);
+
+      if (progress > 1) {
+        for (let key in lines) {
+          lines[key].forEach(line => line.setMap(null));
+          lines[key] = [];
+        }
+        prevProgress = 0;
+        startTime = new Date().getTime();
+        return animate();
+      }
+
+      for (let key in lines) {
+        const path = linesData[key].slice(
+          linesData[key].length * prevProgress - 1,
+          linesData[key].length * progress,
+        );
+
+        const polyline = new google.maps.Polyline({
+          geodesic: true,
+          path,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2,
+        });
+
+        lines[key].push(polyline);
+        polyline.setMap(map);
+
+        if (lines[key].length > 5 * duration) {
+          lines[key].shift().setMap(null);
+        }
+      }
+
+      prevProgress = progress;
+
+      setTimeout(() => {
+        animate();
+      }, 20);
+    }
+
+    animate();
   }
 
   function bspline(lats, lngs) {
