@@ -49,7 +49,7 @@ window.onload = function () {
         });
     }
     if ((linesIsActive || territoryIsActive)) {
-      fetch(`${window.baseURL}/animal-path/${species}/${fromDate}/${toDate}`)
+      fetch(`${window.baseURL}/optimal-path-date-range/${species}/${fromDate}/${toDate}`)
         .then(res => res.json())
         .then(json => {
           // animateLinesToMap(json);
