@@ -19,27 +19,29 @@ window.addEventListener('load', () => {
       document.querySelector('.content').classList.toggle('closed', !closed);
     });
 
-  $('.dropdown.species')
-    .dropdown({
-      placeholder: 'Select species',
-      values: [{
-        name: 'Stork',
-        value: 'stork',
-        selected: true,
-      }, {
-        name: 'Deer',
-        value: 'deer',
-      }, {
-        name: 'Frog',
-        value: 'frog',
-      }],
-      onAdd: function (value) {
-        filterParams.species.push(value);
-      },
-      onRemove: function (value) {
-        filterParams.species = filterParams.species.filter(spec => spec !== value);
-      },
-    });
+  fetch("http://localhost:8080/all-animals")
+      .then(result => result.json())
+      .then(json => {
+          const names = json.map(item =>{
+              return { name: item.charAt(0).toUpperCase() + item.slice(1), value: item};
+          });
+          $('.dropdown.species')
+              .dropdown({
+                  placeholder: 'Select species',
+                  values: names,
+                  onAdd: function (value) {
+                      filterParams.species.push(value);
+                  },
+                  onRemove: function (value) {
+                      filterParams.species = filterParams.species.filter(spec => spec !== value);
+                  },
+              });
+      });
+
+  $('.checkbox')
+      .on('click',  e =>{
+          console.log(e)
+      })
 
   $('.maptype button')
     .on('click', e => {

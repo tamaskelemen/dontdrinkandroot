@@ -9,7 +9,30 @@ import '../lib/maps.google.polygon.containsLatLng';
 import './toolbar';
 import './layer-lines';
 
-var coordinate = new google.maps.LatLng(40, -90);
-var polygon = new google.maps.Polygon([], "#000000", 1, 1, "#336699", 0.3);
-var isWithinPolygon = polygon.containsLatLng(coordinate);
-console.log(isWithinPolygon);
+const animalNames = [];
+export function getAnimalNames() {
+    $('.dropdown.species').append({ name: 'asdf', value: 'asdf'});
+    console.log($('.dropdown.species'));
+
+    // fetch('http://localhost:8080/all-animals')
+    //     .then(result => result.json())
+    //     .then(json => {
+    //         $('.dropdown.species');
+    //         return animalNames;
+    //     });
+}
+
+getAnimalNames();
+
+
+function checkCoordinateIsInPolygon(coordinate, polygon) {
+    var isWithinPolygon = polygon.containsLatLng(coordinate);
+
+    if (isWithinPolygon) {
+        var marker = new google.maps.Marker({
+            position: coordinate,
+            map: map,
+            title: 'Vehicle coordinate in animal territory!'
+        });
+    }
+}
