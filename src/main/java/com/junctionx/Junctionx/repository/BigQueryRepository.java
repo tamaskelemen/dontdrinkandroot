@@ -328,9 +328,22 @@ public class BigQueryRepository {
         }
     }
 
-    public ObjectNode optimalPathDateRange(String animal, String from, String to) {
+    public ObjectNode optimalPathDateRange(String animals, String from, String to) {
         try {
-            String pathFromTo = "SELECT device_id, longitude, latitude FROM iotds.aggregated_bulk_data WHERE animal like '" + animal + "' AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC LIMIT 2000;";
+			String[] split = animals.split("\\+");
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < split.length; i++) {
+				sb.append("'");
+				sb.append(split[i]);
+				sb.append("'");
+				if (i != split.length - 1) {
+					sb.append(", ");
+				}
+			}
+			String joined = sb.toString();
+
+
+			String pathFromTo = "SELECT device_id, longitude, latitude, animal FROM iotds.aggregated_bulk_data WHERE  animal IN (" + joined + ") AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC LIMIT 2000;";
 
             QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(pathFromTo)
                     .setUseLegacySql(false).build();
@@ -366,7 +379,7 @@ public class BigQueryRepository {
 
                 objectNode.put("lat", lat);
                 objectNode.put("lng", lng);
-                objectNode.put("animal", animal);
+				objectNode.put("animal", row.get("animal").getStringValue());
 
                 ArrayNode temp = (ArrayNode) kulso.get(id);
                 if (temp == null) {
