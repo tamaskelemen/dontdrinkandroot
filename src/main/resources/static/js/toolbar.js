@@ -8,6 +8,7 @@ export let filterParams = {
   animationDuration: 10,
 };
 
+window.test = filterParams.species;
 window.addEventListener('load', () => {
   $('.open-close-button')
     .on('click', () => {

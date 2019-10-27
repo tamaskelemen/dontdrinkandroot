@@ -8,7 +8,7 @@ window.onload = function () {
   let territoryMaps = [];
 
   applyButton.addEventListener('click', function () {
-    const species = filterParams.species.reduce((a, b) => `${a},${b}`);
+    const species = filterParams.species === [] ? [] : filterParams.species.reduce((a,b) => `${a},${b}`);
 
     const linesIsActive = $('#lines').hasClass('active');
     const heatmapIsActive = $('#heatmap').hasClass('active');
@@ -42,9 +42,13 @@ window.onload = function () {
 
           applyButton.classList.remove('loading');
         })
-        .catch(console.error);
+        .catch( error => {
+          console.error(error);
+          applyButton.classList.remove('loading');
+        });
     }
-    if (linesIsActive || territoryIsActive) {
+    if ((linesIsActive || territoryIsActive) && species !== []) {
+      console.log(fromDate);
       fetch(`http://localhost:8080/animal-path/${species}/${fromDate}/${toDate}`)
         .then(res => res.json())
         .then(json => {
@@ -54,7 +58,10 @@ window.onload = function () {
 
           applyButton.classList.remove('loading');
         })
-        .catch(console.error);
+          .catch( error => {
+            console.error(error);
+            applyButton.classList.remove('loading');
+          });
     }
   });
 
@@ -72,7 +79,6 @@ window.onload = function () {
       // let path = bspline(lat, lng);
       let animalsWay = new google.maps.Polyline({
         geodesic: true,
-        // path: path,
         path: linesData[value],
         strokeColor: '#FF0000',
         strokeOpacity: 1.0,
