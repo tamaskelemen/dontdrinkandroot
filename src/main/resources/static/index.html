@@ -45,7 +45,7 @@
 				<div class="custom-timespan">
 					<div class="field">
 						<label>From</label>
-						<input type="date" class="fromDate" value="2013-10-26"/>
+						<input type="date" class="fromDate" value="2013-10-26" />
 					</div>
 					<div class="field">
 						<label>To</label>
@@ -83,6 +83,17 @@
       const heatmapG = document.createElement('script');
       heatmapG.src = 'https://cdn.jsdelivr.net/npm/gmaps-heatmap@1.0.2/gmaps-heatmap.min.js';
       document.body.appendChild(heatmapG);
+      heatmapG.onload = () => {
+        heatmapOverlay = new HeatmapOverlay(map,
+          {
+            'radius': 15,
+            'maxOpacity': 1,
+            latField: 'lat',
+            lngField: 'lng',
+            valueField: 'count',
+          },
+        );
+      };
     };
 
     map = new google.maps.Map(document.getElementById('map'), {
