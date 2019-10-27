@@ -19,7 +19,7 @@ window.addEventListener('load', () => {
       document.querySelector('.content').classList.toggle('closed', !closed);
     });
 
-  fetch("http://localhost:8080/all-animals")
+  fetch(window.baseURL + "/all-animals")
       .then(result => result.json())
       .then(json => {
           const names = json.map(item =>{

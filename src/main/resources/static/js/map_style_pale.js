@@ -1,4 +1,4 @@
-mapstyles = [
+window.mapstyles = [
   {
     'featureType': 'administrative',
     'elementType': 'all',

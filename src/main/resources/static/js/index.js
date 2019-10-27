@@ -9,6 +9,8 @@ import '../lib/maps.google.polygon.containsLatLng';
 import './toolbar';
 import './layer-lines';
 
+window.baseURL = 'http://localhost:8080';
+
 const animalNames = [];
 export function getAnimalNames() {
     $('.dropdown.species').append({ name: 'asdf', value: 'asdf'});

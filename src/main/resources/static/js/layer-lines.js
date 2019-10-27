@@ -34,7 +34,7 @@ window.onload = function () {
     // }
 
     if (heatmapIsActive) {
-      fetch(`http://localhost:8080/heatmap-date-range/${species}/${fromDate}/${toDate}`)
+      fetch(`${window.baseURL}/heatmap-date-range/${species}/${fromDate}/${toDate}`)
         .then(res => res.json())
         .then(json => {
           !linesIsActive && addLinesToMap({}, false);
@@ -49,7 +49,7 @@ window.onload = function () {
         });
     }
     if ((linesIsActive || territoryIsActive)) {
-      fetch(`http://localhost:8080/animal-path/${species}/${fromDate}/${toDate}`)
+      fetch(`${window.baseURL}/animal-path/${species}/${fromDate}/${toDate}`)
         .then(res => res.json())
         .then(json => {
           // animateLinesToMap(json);

@@ -81,9 +81,9 @@
 </div>
 <script src="js/map_style_pale.js"></script>
 <script>
-  var map;
+  window.map;
 
-  function initMap() {
+  window.initMap = function() {
     const heatmap = document.createElement('script');
     heatmap.src = 'https://cdn.jsdelivr.net/npm/heatmapjs@2.0.2/heatmap.min.js';
     document.body.appendChild(heatmap);
@@ -109,7 +109,7 @@
       zoom: 3,
       streetViewControl: false,
       fullscreenControl: false,
-      styles: mapstyles,
+      styles: window.mapstyles,
     });
   }
 </script>
