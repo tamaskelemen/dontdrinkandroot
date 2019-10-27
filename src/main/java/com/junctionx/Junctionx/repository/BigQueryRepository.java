@@ -366,7 +366,7 @@ public class BigQueryRepository {
 
                 objectNode.put("lat", lat);
                 objectNode.put("lng", lng);
-                objectNode.put("animal", animal);
+                objectNode.put("animal", row.get("animal").getStringValue());
 
                 ArrayNode temp = (ArrayNode) kulso.get(id);
                 if (temp == null) {
