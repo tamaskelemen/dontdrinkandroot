@@ -9,7 +9,7 @@ import '../lib/maps.google.polygon.containsLatLng';
 import './toolbar';
 import './layer-lines';
 
-window.baseURL = 'http://localhost';
+window.baseURL = 'http://www.dontdrinkandroot.tech';
 
 const animalNames = [];
 export function getAnimalNames() {
