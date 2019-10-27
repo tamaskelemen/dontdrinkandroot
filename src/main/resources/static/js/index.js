@@ -9,7 +9,7 @@ import '../lib/maps.google.polygon.containsLatLng';
 import './toolbar';
 import './layer-lines';
 
-window.baseURL = 'http://localhost:8080';
+window.baseURL = 'http://localhost';
 
 const animalNames = [];
 export function getAnimalNames() {
