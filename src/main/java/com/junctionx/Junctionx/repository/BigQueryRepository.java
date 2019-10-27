@@ -315,4 +315,64 @@ public class BigQueryRepository {
             return null;
         }
     }
+
+    public ObjectNode optimalPathDateRange(String animal, String from, String to) {
+        try {
+            String pathFromTo = "SELECT device_id, longitude, latitude FROM iotds.aggregated_bulk_data WHERE animal like '" + animal + "' AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC LIMIT 2000;";
+
+            QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(pathFromTo)
+                    .setUseLegacySql(false).build();
+
+            JobId jobId = JobId.of(UUID.randomUUID().toString());
+            Job queryJob = bigQuery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());
+
+            queryJob = queryJob.waitFor();
+
+            // Check for errors
+            if (queryJob == null) {
+                throw new RuntimeException("Job no longer exists");
+            } else if (queryJob.getStatus().getError() != null) {
+                // You can also look at queryJob.getStatus().getExecutionErrors() for all
+                // errors, not just the latest one.
+                throw new RuntimeException(queryJob.getStatus().getError().toString());
+            }
+
+            // Get the results.
+            TableResult tableResult = queryJob.getQueryResults();
+            ObjectMapper asd = new ObjectMapper();
+
+            //ArrayNode result = asd.createArrayNode();
+            // Print all pages of the results.
+            ObjectNode kulso = asd.createObjectNode();
+
+            for (FieldValueList row : tableResult.iterateAll()) {
+                ObjectNode objectNode = asd.createObjectNode();
+
+                String id = row.get("device_id").getStringValue();
+                Double lat = row.get("latitude").getDoubleValue();
+                Double lng = row.get("longitude").getDoubleValue();
+
+                objectNode.put("lat", lat);
+                objectNode.put("lng", lng);
+                objectNode.put("animal", animal);
+
+                ArrayNode temp = (ArrayNode) kulso.get(id);
+                if (temp == null) {
+                    temp = asd.createArrayNode();
+                    temp.add(objectNode);
+                } else {
+                    temp.add(objectNode);
+                }
+
+                kulso.set(id, temp);
+            }
+
+            return kulso;
+
+        } catch (Exception e) {
+            log.error("----------error: ", e);
+        }
+
+        return null;
+    }
 }
