@@ -18,6 +18,8 @@ window.onload = function () {
     const fromDate = filterParams.fromDate;
     const toDate = filterParams.toDate;
 
+    const animate = document.querySelector('.animate input').checked;
+
     applyButton.classList.add('loading');
 
     // if (window.test.species.includes('Stork')) {
@@ -52,10 +54,15 @@ window.onload = function () {
       fetch(`${window.baseURL}/optimal-path-date-range/${species}/${fromDate}/${toDate}`)
         .then(res => res.json())
         .then(json => {
-          // animateLinesToMap(json);
-          addLinesToMap(json, linesIsActive);
-          !heatmapIsActive && addHeatmapToMap([], false);
-          addTerritoryToMap(json, territoryIsActive);
+          if (animate) {
+            animateLinesToMap(json);
+            !heatmapIsActive && addHeatmapToMap([], false);
+            addTerritoryToMap(json, territoryIsActive);
+          } else {
+            addLinesToMap(json, linesIsActive);
+            !heatmapIsActive && addHeatmapToMap([], false);
+            addTerritoryToMap(json, territoryIsActive);
+          }
 
           applyButton.classList.remove('loading');
         })

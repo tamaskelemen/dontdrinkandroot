@@ -60,10 +60,14 @@
 						<input type="date" />
 					</div>
 				</div>
-				<div class="field" style="margin-top: 1em;">
-					<label>Animation duration</label>
-					<div class="ui range labeled"></div>
+				<div class="ui checkbox animate">
+					<input type="checkbox" name="example">
+					<label>Animate</label>
 				</div>
+				<!--				<div class="field" style="margin-top: 1em;">-->
+				<!--					<label>Animation duration</label>-->
+				<!--					<div class="ui range labeled"></div>-->
+				<!--				</div>-->
 			</div>
 		</div>
 		<div>
@@ -77,7 +81,7 @@
 <script>
   window.map;
 
-  window.initMap = function() {
+  window.initMap = function () {
     const heatmap = document.createElement('script');
     heatmap.src = 'https://cdn.jsdelivr.net/npm/heatmapjs@2.0.2/heatmap.min.js';
     document.body.appendChild(heatmap);
@@ -105,7 +109,7 @@
       fullscreenControl: false,
       styles: window.mapstyles,
     });
-  }
+  };
 </script>
 <script
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC40Ygve-HsjP0ET6yBRmomWT457jv7KTg&callback=initMap&libraries=visualization"
