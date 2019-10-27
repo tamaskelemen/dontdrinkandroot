@@ -11,6 +11,7 @@ import com.junctionx.Junctionx.repository.BigQueryRepository;
 import java.util.List;
 
 @Controller
+@CrossOrigin
 public class PathDateRangeController {
 
     @Autowired

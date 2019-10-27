@@ -10,6 +10,8 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+	<script src="https://cdn.rawgit.com/bjornharrtell/jsts/gh-pages/1.1.2/jsts.min.js"></script>
+	<script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
 	<meta name="viewport" content="initial-scale=1.0">
 	<link href="css/style.css">
 	<meta charset="utf-8">
@@ -38,20 +40,20 @@
 						<button class="ui toggle button" id="territory" data-value="terr">Territory</button>
 					</div>
 				</div>
+				<!--				<div class="field">-->
+				<!--					<label>Time span</label>-->
+				<!--					<select class="ui dropdown timespan"></select>-->
+				<!--				</div>-->
+				<!--				<div class="custom-timespan">-->
 				<div class="field">
-					<label>Time span</label>
-					<select class="ui dropdown timespan"></select>
+					<label>Start date</label>
+					<input type="date" class="fromDate" />
 				</div>
-				<div class="custom-timespan">
-					<div class="field">
-						<label>From</label>
-						<input type="date" class="fromDate" value="2013-10-26" />
-					</div>
-					<div class="field">
-						<label>To</label>
-						<input type="date" class="toDate" value="2013-10-28" />
-					</div>
+				<div class="field">
+					<label>End date</label>
+					<input type="date" class="toDate" />
 				</div>
+				<!--				</div>-->
 				<div class="fixed-timespan">
 					<div class="field">
 						<label>Date</label>
@@ -62,6 +64,12 @@
 					<label>Animation duration</label>
 					<div class="ui range labeled"></div>
 				</div>
+			</div>
+		</div>
+		<div>
+			<div class="ui checkbox">
+				<input type="checkbox" name="traffic-data">
+				<label>Show traffic data</label>
 			</div>
 		</div>
 		<div>
@@ -86,7 +94,7 @@
       heatmapG.onload = () => {
         heatmapOverlay = new HeatmapOverlay(map,
           {
-            'radius': 15,
+            'radius': 5,
             'maxOpacity': 1,
             latField: 'lat',
             lngField: 'lng',
