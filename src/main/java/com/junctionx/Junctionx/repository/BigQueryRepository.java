@@ -343,7 +343,7 @@ public class BigQueryRepository {
 			String joined = sb.toString();
 
 
-			String pathFromTo = "SELECT device_id, longitude, latitude, animal FROM iotds.aggregated_bulk_data WHERE  animal IN (" + joined + ") AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC LIMIT 2000;";
+			String pathFromTo = "SELECT device_id, longitude, latitude, animal FROM iotds.aggregated_bulk_data WHERE  animal IN (" + joined + ") AND (longitude NOT LIKE 'NA' AND latitude NOT LIKE 'NA') AND timestamp BETWEEN  '"+ from +" 00:00:00' AND '" + to + " 23:59:59' ORDER BY timestamp ASC;";
 
             QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(pathFromTo)
                     .setUseLegacySql(false).build();
