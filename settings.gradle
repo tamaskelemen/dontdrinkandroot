@@ -1,1 +1,3 @@
 rootProject.name = 'Junctionx'
+include 'junctionxweb'
+
