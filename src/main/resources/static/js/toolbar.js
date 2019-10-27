@@ -40,7 +40,20 @@ window.addEventListener('load', () => {
 
   $('.checkbox')
       .on('click',  e =>{
-          console.log(e)
+          fetch('http://localhost:8080/road-data').then(result => result.json())
+              .then(json => {
+                  const mapped = json.map(item => {
+                      return {lat: item[0], lng: item[1]}
+                  });
+                  let animalsWay = new google.maps.Polyline({
+                      geodesic: true,
+                      path: mapped,
+                      strokeColor: '#2000ff',
+                      strokeOpacity: 1.0,
+                      strokeWeight: 2,
+                  });
+                  animalsWay.setMap(map);
+              })
       })
 
   $('.maptype button')
