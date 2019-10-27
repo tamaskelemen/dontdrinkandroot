@@ -9,7 +9,7 @@ window.onload = function () {
   let territoryMaps = [];
 
   applyButton.addEventListener('click', function () {
-    const species = filterParams.species === [] ? [] : filterParams.species.reduce((a, b) => `${a},${b}`);
+    const species = filterParams.species === [] ? [] : filterParams.species.reduce((a, b) => `${a}+${b}`);
 
     const linesIsActive = $('#lines').hasClass('active');
     const heatmapIsActive = $('#heatmap').hasClass('active');
